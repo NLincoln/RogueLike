@@ -1,0 +1,7 @@
+Debug/*
+.vs/*
+*.sdf
+*.opendb
+RogueLike/Debug/*
+*.filters
+*.user
