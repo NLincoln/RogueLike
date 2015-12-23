@@ -10,6 +10,9 @@
 #include "RenderCommon.h"
 #include "RenderManager.h"
 #include "Entity.h"
+#include "Player.h"
+#include "Event.h"
+
 
 int main(int argc, const char** argv)
 {
@@ -20,12 +23,15 @@ int main(int argc, const char** argv)
 	SpriteFactory Factory("TileSet.png");
 	Window.create(Mode, "First Window");
 	
+	EventManager EventManager;
+
+
 	RenderManager Manager;
-	Entity* e = new Entity;
+	Player* e = new Player(Factory["@"], EventManager);
 	e->SetWorldPos(WorldPos(5, 6));
-	e->SetSprite(Factory["Hello!"]);
 	Manager.AddEntity(e);
 	Manager.SetRenderTarget(&Window);
+	
 	Window.clear(sf::Color::Black);
 
 	while (Window.isOpen())
@@ -37,6 +43,7 @@ int main(int argc, const char** argv)
 			// "close requested" event: we close the window
 			if (event.type == sf::Event::Closed)
 				Window.close();
+			EventManager.ProcessSFMLEvent(event);
 		}
 		Window.clear();
 		Manager.Draw();

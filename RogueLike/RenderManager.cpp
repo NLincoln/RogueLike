@@ -1,6 +1,5 @@
 #include "RenderManager.h"
 #include "RenderCommon.h"
-
 #include "Entity.h"
 
 void RenderManager::AddEntity(Entity* ent)
@@ -15,13 +14,14 @@ void RenderManager::SetRenderTarget(sf::RenderTarget* target)
 
 void RenderManager::Draw()
 {
-	for (Entity* entity : m_Entities)
-		m_RenderTarget->draw(*entity);
-	
+	if(m_RenderTarget)
+		for (Entity* entity : m_Entities)
+			m_RenderTarget->draw(*entity);	
 }
 
-RenderManager::RenderManager()
+RenderManager::RenderManager(sf::RenderTarget* target)
 {
+	m_RenderTarget = target;
 }
 
 

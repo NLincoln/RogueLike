@@ -159,7 +159,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="Event.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="MovementSystem.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="RenderManager.cpp" />
     <ClCompile Include="SpriteBlock.cpp" />
     <ClCompile Include="SpriteFactory.cpp" />
@@ -167,6 +170,9 @@
   <ItemGroup>
     <ClInclude Include="Common.h" />
     <ClInclude Include="Entity.h" />
+    <ClInclude Include="Event.h" />
+    <ClInclude Include="MovementSystem.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="RenderCommon.h" />
     <ClInclude Include="RenderManager.h" />
     <ClInclude Include="SpriteBlock.h" />

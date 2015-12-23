@@ -16,7 +16,7 @@ public:
 
 	void Draw();
 
-	RenderManager();
+	RenderManager(sf::RenderTarget* target = nullptr);
 	~RenderManager();
 };
 
