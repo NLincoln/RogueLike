@@ -8,20 +8,20 @@ Player::Player(const SpriteBlock sprite, EventManager& manager)
 {
 	m_Sprite = sprite;
 
-	manager.AddHook(ERange::Movement, [&] (EventType Event)
+	manager.AddHook(ERange::Movement, EventContext::PLAYER_FOCUS, [&] (EventType Event)
 	{
-		switch(Event)
+		switch (Event)
 		{
-		case EventType::MOVE_LEFT: 
+		case EventType::MOVE_LEFT:
 			m_WorldPos.x--;
 			break;
-		case EventType::MOVE_RIGHT: 
+		case EventType::MOVE_RIGHT:
 			m_WorldPos.x++;
 			break;
-		case EventType::MOVE_UP: 
+		case EventType::MOVE_UP:
 			m_WorldPos.y--;
 			break;
-		case EventType::MOVE_DOWN: 
+		case EventType::MOVE_DOWN:
 			m_WorldPos.y++;
 			break;
 		default: break;
