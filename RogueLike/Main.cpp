@@ -12,6 +12,7 @@
 #include "Entity.h"
 #include "Player.h"
 #include "Event.h"
+#include "Cursor.h"
 
 
 int main(int argc, const char** argv)
@@ -27,11 +28,20 @@ int main(int argc, const char** argv)
 
 
 	RenderManager Manager;
-	Player* e = new Player(Factory["@"], EventManager);
-	e->SetWorldPos(WorldPos(5, 6));
-	Manager.AddEntity(e);
+	
+	Cursor* c = new Cursor(Factory["X"], EventManager);
+	c->SetWorldPos(WorldPos(10, 3));
+	Manager.AddEntity(c);
+
+
+	Player* p = new Player(Factory["@"], EventManager);
+	p->SetWorldPos(WorldPos(5, 6));
+	Manager.AddEntity(p);
+	
+
 	Manager.SetRenderTarget(&Window);
 	
+
 	Window.clear(sf::Color::Black);
 
 	while (Window.isOpen())

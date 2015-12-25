@@ -65,22 +65,31 @@ EventType EventManager::HandleKeyPressed(sf::Event KeyEvent)
 
 void EventManager::HandleEvent(EventType Event)
 {
-	std::vector<EventCallback> Callbacks = m_Callbacks[Event];
-
-	for (auto Callback : Callbacks)
-		Callback(Event);
+	m_Callbacks[Event].top()(Event);
 }
 
 void EventManager::AddHook(const EventRange Range,  EventCallback Callback)
 {
 	for (uint i = static_cast<uint>(Range.first); i <= static_cast<uint>(Range.second); ++i)
 	{
-		m_Callbacks[static_cast<EventType>(i)].push_back(Callback);
+		m_Callbacks[static_cast<EventType>(i)].push(Callback);
 	}
 }
 
 void EventManager::AddHook(const EventType Type, EventCallback Callback)
 {
-	m_Callbacks[Type].push_back(Callback);
+	m_Callbacks[Type].push(Callback);
 }
 
+void EventManager::ReleaseHook(const EventRange Range)
+{
+	for (uint i = static_cast<uint>(Range.first); i <= static_cast<uint>(Range.second); ++i)
+	{
+		m_Callbacks[static_cast<EventType>(i)].pop();
+	}
+}
+
+void EventManager::ReleaseHook(const EventType Type)
+{
+	m_Callbacks[Type].pop();
+}

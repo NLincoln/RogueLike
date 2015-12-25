@@ -2,6 +2,7 @@
 
 #include "Common.h"
 #include <functional>
+#include <stack>
 
 enum class EventType : uint
 {
@@ -23,7 +24,7 @@ namespace ERange
 }
 class EventManager
 {
-	std::map<EventType, std::vector<EventCallback>> m_Callbacks;
+	std::map<EventType, std::stack<EventCallback>> m_Callbacks;
 
 	EventType HandleKeyPressed(sf::Event KeyEvent);
 	void HandleEvent(EventType Event);
@@ -31,6 +32,9 @@ class EventManager
 public:
 	void AddHook(const EventRange Range, EventCallback Callback);
 	void AddHook(const EventType  Type, EventCallback Callback);
+
+	void ReleaseHook(const EventRange Range);
+	void ReleaseHook(const EventType Type);
 
 	void ProcessSFMLEvent(sf::Event Event);
 	EventManager();
