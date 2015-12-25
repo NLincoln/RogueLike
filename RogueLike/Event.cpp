@@ -42,7 +42,7 @@ void EventManager::ProcessSFMLEvent(sf::Event Event)
 		HandleEvent(type);
 }
 
-EventManager::EventManager() : CurrentContext(EventContext::PLAYER_FOCUS)
+EventManager::EventManager() 
 {
 }
 
@@ -65,25 +65,22 @@ EventType EventManager::HandleKeyPressed(sf::Event KeyEvent)
 
 void EventManager::HandleEvent(EventType Event)
 {
-	EventContextPair ContextPair = std::make_pair(CurrentContext, Event);
-	std::vector<EventCallback> Callbacks = m_Callbacks[ContextPair];
+	std::vector<EventCallback> Callbacks = m_Callbacks[Event];
 
 	for (auto Callback : Callbacks)
 		Callback(Event);
 }
 
-void EventManager::AddHook(const EventRange Range, const EventContext Context, EventCallback Callback)
+void EventManager::AddHook(const EventRange Range,  EventCallback Callback)
 {
 	for (uint i = static_cast<uint>(Range.first); i <= static_cast<uint>(Range.second); ++i)
 	{
-		EventContextPair ContextPair = std::make_pair(Context, static_cast<EventType>(i));
-		m_Callbacks[ContextPair].push_back(Callback);
+		m_Callbacks[static_cast<EventType>(i)].push_back(Callback);
 	}
 }
 
-void EventManager::AddHook(const EventType Type, const EventContext Context, EventCallback Callback)
+void EventManager::AddHook(const EventType Type, EventCallback Callback)
 {
-	EventContextPair ContextPair = std::make_pair(Context, Type);
-	m_Callbacks[ContextPair].push_back(Callback);
+	m_Callbacks[Type].push_back(Callback);
 }
 

@@ -5,3 +5,5 @@ Debug/*
 RogueLike/Debug/*
 *.filters
 *.user
+*.tlog
+*.idb

@@ -8,7 +8,7 @@ Player::Player(const SpriteBlock sprite, EventManager& manager)
 {
 	m_Sprite = sprite;
 
-	manager.AddHook(ERange::Movement, EventContext::PLAYER_FOCUS, [&] (EventType Event)
+	manager.AddHook(ERange::Movement, [&] (EventType Event)
 	{
 		switch (Event)
 		{
