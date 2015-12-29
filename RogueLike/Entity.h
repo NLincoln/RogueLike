@@ -12,7 +12,7 @@ protected:
 	SpriteBlock m_Sprite;
 public:
 	WorldPos GetWorldPos() const;
-	WorldPos MoveWorldPos(WorldPos delta);
+	virtual WorldPos MoveWorldPos(WorldPos delta);
 	void SetWorldPos(WorldPos NewPos);
 
 	void SetSprite(SpriteBlock sprite);

@@ -160,25 +160,29 @@
   <ItemGroup>
     <ClCompile Include="Cursor.cpp" />
     <ClCompile Include="Entity.cpp" />
-    <ClCompile Include="EntityManager.cpp" />
+    <ClCompile Include="MovementSystem.cpp" />
     <ClCompile Include="Event.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="ObstructionComponent.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="RenderManager.cpp" />
     <ClCompile Include="SpriteBlock.cpp" />
     <ClCompile Include="SpriteFactory.cpp" />
+    <ClCompile Include="Wall.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common.h" />
     <ClInclude Include="Cursor.h" />
     <ClInclude Include="Entity.h" />
-    <ClInclude Include="EntityManager.h" />
+    <ClInclude Include="MovementSystem.h" />
     <ClInclude Include="Event.h" />
+    <ClInclude Include="ObstructionComponent.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="RenderCommon.h" />
     <ClInclude Include="RenderManager.h" />
     <ClInclude Include="SpriteBlock.h" />
     <ClInclude Include="SpriteFactory.h" />
+    <ClInclude Include="Wall.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

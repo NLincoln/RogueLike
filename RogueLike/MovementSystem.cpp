@@ -1,5 +1,5 @@
-#include "EntityManager.h"
 #include "Event.h"
+#include "MovementSystem.h"
 
 
 void MovementSystem::SetFocus(Entity* NewFocus)

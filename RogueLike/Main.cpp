@@ -13,7 +13,7 @@
 #include "Player.h"
 #include "Event.h"
 #include "Cursor.h"
-#include "EntityManager.h"
+#include "MovementSystem.h"
 
 
 int main(int argc, const char** argv)
@@ -54,7 +54,13 @@ int main(int argc, const char** argv)
 		}
 	};
 
+	EventCallback Close = [&] (EventType Type)
+	{
+		Window->close();
+	};
+
 	EventManager.AddHook(ERange::NumKey, Switch);
+	EventManager.AddHook(EventType::EXIT_GAME, Close);
 
 	RenderManager.SetRenderTarget(Window);
 	while (Window->isOpen())
