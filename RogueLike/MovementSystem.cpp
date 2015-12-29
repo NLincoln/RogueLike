@@ -17,6 +17,9 @@ void MovementSystem::AddHook(const EventRange Range, EventCallback Callback, Ent
 
 void MovementSystem::AddHook(const EventType Type, EventCallback Callback, Entity* Entity)
 {
+	if (std::find(m_Entities.begin(), m_Entities.end(), Entity) == m_Entities.end())
+		m_Entities.push_back(Entity);
+	
 	m_EntityCallbacks[Entity][Type] = Callback;
 }
 

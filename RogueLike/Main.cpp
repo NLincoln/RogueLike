@@ -14,6 +14,7 @@
 #include "Event.h"
 #include "Cursor.h"
 #include "MovementSystem.h"
+#include "Wall.h"
 
 
 int main(int argc, const char** argv)
@@ -26,29 +27,27 @@ int main(int argc, const char** argv)
 	Window->create(Mode, "First Window");
 	
 	EventManager EventManager;
-	MovementSystem EntityManager(EventManager);
-
+	MovementSystem MovementSystem(EventManager);
+	CollisionSystem CollisionSystem;
 	RenderManager RenderManager;
-	
-	Cursor* c = new Cursor(Factory["X"], EntityManager);
-	c->SetWorldPos(WorldPos(10, 3));
-	RenderManager.AddEntity(c);
 
 
-	Player* p = new Player(Factory["@"], EntityManager);
+	Player* p = new Player(Factory["@"], MovementSystem, CollisionSystem);
 	p->SetWorldPos(WorldPos(5, 6));
 	RenderManager.AddEntity(p);
-	EntityManager.SetFocus(p);
+	MovementSystem.SetFocus(p);
+
+	Wall* w = new Wall(Factory[SPRITENAMES::DOOR]);
+	w->SetWorldPos(WorldPos(10, 8));
+	RenderManager.AddEntity(w);
+	CollisionSystem.AddEntity(w);
 
 	EventCallback Switch = [&] (EventType Type)
 	{
 		switch(Type)
 		{
-		case EventType::NUMPAD_1:
-			EntityManager.SetFocus(c);
-			break;
 		case EventType::NUMPAD_2:
-			EntityManager.SetFocus(p);
+			MovementSystem.SetFocus(p);
 			break;
 		default: break;
 		}

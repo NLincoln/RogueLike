@@ -32,11 +32,11 @@ class SpriteFactory
 
 	std::map<SPRITENAMES, sf::Texture> m_Textures;
 
-	sf::Sprite CreateFromSpriteName(SPRITENAMES name);
+	SpriteBlock CreateFromSpriteName(SPRITENAMES name);
 	SpriteBlock CreateFromText(std::string Text);
 
 public:
-	sf::Sprite operator[](SPRITENAMES name);
+	SpriteBlock operator[](SPRITENAMES name);
 	SpriteBlock operator[](std::string Text);
 	SpriteFactory(std::string Filename);
 	~SpriteFactory();

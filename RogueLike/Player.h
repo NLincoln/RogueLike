@@ -2,15 +2,17 @@
 
 #include "Entity.h"
 #include "Event.h"
+#include "CollisionSystem.h"
 
 class MovementSystem;
 class EventManager;
 
 class Player : public Entity
 {
-	//void MovementCallback(EventType Event);
+	CollisionCallback m_CollisionCallback;
+
 public:
-	Player(SpriteBlock sprite, MovementSystem& manager);
+	Player(SpriteBlock sprite, MovementSystem& manager, CollisionSystem& CollisionSystem);
 	~Player();
 };
 

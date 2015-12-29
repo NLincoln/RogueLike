@@ -20,14 +20,16 @@ SpriteBlock SpriteFactory::CreateFromText(std::string Text)
 	return Result;
 }
 
-sf::Sprite SpriteFactory::CreateFromSpriteName(SPRITENAMES name)
+SpriteBlock SpriteFactory::CreateFromSpriteName(SPRITENAMES name)
 {
-	sf::Sprite Result;
-	Result.setTexture(m_Textures[name]);
+	SpriteBlock Result;
+	sf::Sprite Sprite;
+	Sprite.setTexture(m_Textures[name]);
+	Result.AddSprite(Sprite);
 	return Result;
 }
 
-sf::Sprite SpriteFactory::operator[](SPRITENAMES name)
+SpriteBlock SpriteFactory::operator[](SPRITENAMES name)
 {
 	return CreateFromSpriteName(name);
 }

@@ -1,9 +1,9 @@
 #include "Wall.h"
 
 
-Wall::Wall() : m_ObstructionComponent([] () {})
+Wall::Wall(SpriteBlock Sprite) : m_ObstructionComponent([] () {})
 {
-	
+	m_Sprite = Sprite;
 }
 
 
