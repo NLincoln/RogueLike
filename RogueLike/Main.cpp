@@ -40,12 +40,21 @@ int main(int argc, const char** argv)
 	RenderManager.AddEntity(p);
 	EntityManager.SetFocus(p);
 
-	EventCallback CloseWindow = [&Window] (EventType Type)
+	EventCallback Switch = [&] (EventType Type)
 	{
-		Window->close();
+		switch(Type)
+		{
+		case EventType::NUMPAD_1:
+			EntityManager.SetFocus(c);
+			break;
+		case EventType::NUMPAD_2:
+			EntityManager.SetFocus(p);
+			break;
+		default: break;
+		}
 	};
 
-	EventManager.AddHook(EventType::EXIT_GAME, CloseWindow);
+	EventManager.AddHook(ERange::NumKey, Switch);
 
 	RenderManager.SetRenderTarget(Window);
 	while (Window->isOpen())

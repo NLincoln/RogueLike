@@ -15,6 +15,18 @@ enum class EventType : uint
 	MOVE_RIGHT,
 	MOVE_UP,
 	MOVE_DOWN,
+
+	/* Numkey Events */
+	NUMPAD_0,
+	NUMPAD_1,
+	NUMPAD_2,
+	NUMPAD_3,
+	NUMPAD_4,
+	NUMPAD_5,
+	NUMPAD_6,
+	NUMPAD_7,
+	NUMPAD_8,
+	NUMPAD_9,
 };
 
 using EventRange = std::pair<EventType, EventType>;
@@ -24,6 +36,7 @@ using EventCallback = std::function<void(EventType)>;
 namespace ERange
 {
 	const EventRange Movement = { EventType::MOVE_LEFT, EventType::MOVE_DOWN };
+	const EventRange NumKey = { EventType::NUMPAD_0, EventType::NUMPAD_9 };
 }
 class EventManager
 {

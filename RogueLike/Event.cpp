@@ -62,6 +62,17 @@ EventType EventManager::HandleKeyPressed(sf::Event KeyEvent)
 
 	ControlMaps[sf::Keyboard::Escape] = EventType::EXIT_GAME;
 
+	ControlMaps[sf::Keyboard::Num1] = EventType::NUMPAD_1;
+	ControlMaps[sf::Keyboard::Num2] = EventType::NUMPAD_2;
+	ControlMaps[sf::Keyboard::Num3] = EventType::NUMPAD_3;
+	ControlMaps[sf::Keyboard::Num4] = EventType::NUMPAD_4;
+	ControlMaps[sf::Keyboard::Num5] = EventType::NUMPAD_5;
+	ControlMaps[sf::Keyboard::Num6] = EventType::NUMPAD_6;
+	ControlMaps[sf::Keyboard::Num7] = EventType::NUMPAD_7;
+	ControlMaps[sf::Keyboard::Num8] = EventType::NUMPAD_8;
+	ControlMaps[sf::Keyboard::Num9] = EventType::NUMPAD_9;
+	ControlMaps[sf::Keyboard::Num0] = EventType::NUMPAD_0;
+
 	return ControlMaps[KeyEvent.key.code];
 }
 
