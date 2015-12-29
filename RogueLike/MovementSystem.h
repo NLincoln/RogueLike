@@ -1,8 +1,10 @@
 #pragma once
+class EventManager;
+
 class MovementSystem
 {
 public:
-	MovementSystem();
+	MovementSystem(EventManager& Manager);
 	~MovementSystem();
 };
 

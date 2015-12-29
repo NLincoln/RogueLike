@@ -5,7 +5,7 @@
 #include "SpriteBlock.h"
 #include "RenderCommon.h"
 
-class Entity :  public sf::Drawable, public sf::Transformable
+class Entity : public sf::Drawable, public sf::Transformable
 {
 protected:
 	WorldPos m_WorldPos;

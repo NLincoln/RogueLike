@@ -60,36 +60,29 @@ EventType EventManager::HandleKeyPressed(sf::Event KeyEvent)
 	ControlMaps[sf::Keyboard::Left] = EventType::MOVE_LEFT;
 	ControlMaps[sf::Keyboard::Right] = EventType::MOVE_RIGHT;
 
+	ControlMaps[sf::Keyboard::Escape] = EventType::EXIT_GAME;
+
 	return ControlMaps[KeyEvent.key.code];
 }
 
 void EventManager::HandleEvent(EventType Event)
 {
-	m_Callbacks[Event].top()(Event);
+	auto Callbacks = m_Callbacks[Event];
+	for (auto Callback : Callbacks)
+	{
+		Callback(Event);
+	}
 }
 
 void EventManager::AddHook(const EventRange Range,  EventCallback Callback)
 {
 	for (uint i = static_cast<uint>(Range.first); i <= static_cast<uint>(Range.second); ++i)
 	{
-		m_Callbacks[static_cast<EventType>(i)].push(Callback);
+		m_Callbacks[static_cast<EventType>(i)].push_back(Callback);
 	}
 }
 
 void EventManager::AddHook(const EventType Type, EventCallback Callback)
 {
-	m_Callbacks[Type].push(Callback);
-}
-
-void EventManager::ReleaseHook(const EventRange Range)
-{
-	for (uint i = static_cast<uint>(Range.first); i <= static_cast<uint>(Range.second); ++i)
-	{
-		m_Callbacks[static_cast<EventType>(i)].pop();
-	}
-}
-
-void EventManager::ReleaseHook(const EventType Type)
-{
-	m_Callbacks[Type].pop();
+	m_Callbacks[Type].push_back(Callback);
 }

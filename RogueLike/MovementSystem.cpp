@@ -1,9 +1,10 @@
 #include "MovementSystem.h"
+#include "Event.h"
 
 
-
-MovementSystem::MovementSystem()
+MovementSystem::MovementSystem(EventManager& Manager)
 {
+	
 }
 
 

@@ -1,10 +1,10 @@
 #include "Player.h"
 #include "Event.h"
+#include "EntityManager.h"
 #include <functional>
 
 
-
-Player::Player(const SpriteBlock sprite, EventManager& manager)
+Player::Player(const SpriteBlock sprite, EntityManager& manager)
 {
 	m_Sprite = sprite;
 
@@ -26,7 +26,7 @@ Player::Player(const SpriteBlock sprite, EventManager& manager)
 			break;
 		default: break;
 		}
-	});
+	}, this);
 }
 
 Player::~Player()
