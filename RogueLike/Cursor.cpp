@@ -3,7 +3,7 @@
 #include "Event.h"
 #include "EntityManager.h"
 
-Cursor::Cursor(const SpriteBlock sprite, EntityManager& manager)
+Cursor::Cursor(const SpriteBlock sprite, MovementSystem& manager)
 {
 	m_Sprite = sprite;
 

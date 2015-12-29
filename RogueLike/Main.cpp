@@ -26,7 +26,7 @@ int main(int argc, const char** argv)
 	Window->create(Mode, "First Window");
 	
 	EventManager EventManager;
-	EntityManager EntityManager(EventManager);
+	MovementSystem EntityManager(EventManager);
 
 	RenderManager RenderManager;
 	

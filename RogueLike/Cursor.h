@@ -3,14 +3,14 @@
 #include "Common.h"
 
 
-class EntityManager;
+class MovementSystem;
 class EventManager;
 
 class Cursor : public Entity
 {
 
 public:
-	Cursor(const SpriteBlock sprite, EntityManager& manager);
+	Cursor(const SpriteBlock sprite, MovementSystem& manager);
 	~Cursor();
 };
 

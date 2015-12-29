@@ -4,7 +4,7 @@
 #include <functional>
 
 
-Player::Player(const SpriteBlock sprite, EntityManager& manager)
+Player::Player(const SpriteBlock sprite, MovementSystem& manager)
 {
 	m_Sprite = sprite;
 
