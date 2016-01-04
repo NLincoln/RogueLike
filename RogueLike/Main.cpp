@@ -12,46 +12,51 @@
 #include "Entity.h"
 #include "Player.h"
 #include "Event.h"
-#include "Cursor.h"
 #include "MovementSystem.h"
-#include "Wall.h"
+#include "World.h"
 
+template <typename T>
+T GetRandom(T min, T max)
+{
+	return (static_cast<float>(rand()) / RAND_MAX) * (max - min) + min;
+}
 
 int main(int argc, const char** argv)
 {
+	srand(time(nullptr));
 	sf::RenderWindow* Window = new sf::RenderWindow();
 	sf::VideoMode Mode;
 	Mode.height = WINDOW_HEIGHT;
 	Mode.width = WINDOW_WIDTH;
 	SpriteFactory Factory("TileSet.png");
 	Window->create(Mode, "First Window");
-	
+
 	EventManager EventManager;
 	MovementSystem MovementSystem(EventManager);
 	CollisionSystem CollisionSystem;
 	RenderManager RenderManager;
 
+	World World(WorldPos(WINDOW_WIDTH / 16, WINDOW_HEIGHT / 16));
+
+	World.CreateRandom(RenderManager, CollisionSystem, Factory);
 
 	Player* p = new Player(Factory["@"], MovementSystem, CollisionSystem);
-	p->SetWorldPos(WorldPos(5, 6));
-	RenderManager.AddEntity(p);
-	MovementSystem.SetFocus(p);
-
-	Wall* w = new Wall(Factory[SPRITENAMES::DOOR]);
-	w->SetWorldPos(WorldPos(10, 8));
-	RenderManager.AddEntity(w);
-	CollisionSystem.AddEntity(w);
 
 	EventCallback Switch = [&] (EventType Type)
 	{
 		switch(Type)
 		{
 		case EventType::NUMPAD_2:
+			p->SetWorldPos(WorldPos(1, 1));
+			RenderManager.AddEntity(p);
+			CollisionSystem.AddEntity(p);
+
 			MovementSystem.SetFocus(p);
 			break;
 		default: break;
 		}
 	};
+
 
 	EventCallback Close = [&] (EventType Type)
 	{

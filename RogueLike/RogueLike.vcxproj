@@ -170,6 +170,7 @@
     <ClCompile Include="SpriteBlock.cpp" />
     <ClCompile Include="SpriteFactory.cpp" />
     <ClCompile Include="Wall.cpp" />
+    <ClCompile Include="World.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CollisionSystem.h" />
@@ -185,6 +186,7 @@
     <ClInclude Include="SpriteBlock.h" />
     <ClInclude Include="SpriteFactory.h" />
     <ClInclude Include="Wall.h" />
+    <ClInclude Include="World.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

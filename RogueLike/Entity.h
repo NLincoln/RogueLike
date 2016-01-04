@@ -10,6 +10,7 @@ class Entity : public sf::Drawable, public sf::Transformable
 protected:
 	WorldPos m_WorldPos;
 	SpriteBlock m_Sprite;
+
 public:
 	WorldPos GetWorldPos() const;
 	virtual WorldPos MoveWorldPos(WorldPos delta);

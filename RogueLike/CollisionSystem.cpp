@@ -3,7 +3,9 @@
 
 void CollisionSystem::AddEntity(Entity* NewEntity)
 {
-	m_Entities.push_back(NewEntity);
+	if (NewEntity)
+		m_Entities.push_back(NewEntity);
+	
 }
 
 CollisionCallback CollisionSystem::GetCallback()

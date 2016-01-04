@@ -1,10 +1,10 @@
 #include "RenderManager.h"
-#include "RenderCommon.h"
 #include "Entity.h"
 
 void RenderManager::AddEntity(Entity* ent)
 {
-	if(ent) m_Entities.push_back(ent);
+	if(ent)
+		m_Entities.push_back(ent);
 }
 
 void RenderManager::SetRenderTarget(sf::RenderTarget* target)
