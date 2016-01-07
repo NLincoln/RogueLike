@@ -4,11 +4,21 @@
 #include "SpriteFactory.h"
 #include "CollisionSystem.h"
 #include <stack>
+#include <random>
+#include "Tree.h"
 
 template <typename T>
 T GetRandom(T min, T max)
 {
 	return (static_cast<float>(rand()) / RAND_MAX) * (max - min) + min;
+}
+
+uint GetRandomUINT(uint min, uint max)
+{
+	std::random_device rd;
+	std::mt19937 rng(rd());
+	std::uniform_int_distribution<uint> uni(min, max);
+	return uni(rng);
 }
 
 
@@ -26,7 +36,7 @@ void World::CreateRandom(RenderManager& RenderManager, CollisionSystem& Collisio
 		uint BOX_HEIGHT;
 	};
 
-	const desc desc = {100, 7, 5 };
+	const desc desc = { 50, 9, 7 };
 
 	for (uint i = 0; i < m_Dimensions.x * m_Dimensions.y; ++i)
 		m_Entities.emplace_back();
@@ -41,8 +51,8 @@ void World::CreateRandom(RenderManager& RenderManager, CollisionSystem& Collisio
 		sf::Rect<int> Box;
 		Box.height = desc.BOX_HEIGHT;
 		Box.width = desc.BOX_WIDTH;
-		Box.top = GetRandom<uint>(0, (m_Dimensions.y - Box.height) / 2) * 2 + 1;
-		Box.left = GetRandom<uint>(0, (m_Dimensions.x - Box.width) / 2) * 2 + 1;
+		Box.top = GetRandom<uint>(0, (m_Dimensions.y - Box.height) / 2 - 1) * 2 + 1;
+		Box.left = GetRandom<uint>(0, (m_Dimensions.x - Box.width) / 2 - 1) * 2 + 1;
 
 		//We have to check all the other boxes and make sure ours won't intersect
 		bool DoesInterset = false;
@@ -85,11 +95,11 @@ void World::CreateRandom(RenderManager& RenderManager, CollisionSystem& Collisio
 	 * Next, we start carving out tunnels for the player to wander through
 	 */
 
-	WorldPos MinerPos = WorldPos(1, 1);
-	while(!At(MinerPos)) // Find a wall to start carving at. Most of the time, this step will be skipped
+	WorldPos StartPos = WorldPos(1, 1);
+	while(!At(StartPos)) // Find a wall to start carving at. Most of the time, this step will be skipped
 	{
-		MinerPos.x += 2; //Always, ALWAYS carve in increments of two.
-		MinerPos.y += 2;
+		StartPos.x += 2; //Always, ALWAYS carve in increments of two.
+		StartPos.y += 2;
 	}
 
 	//So the miner is now at a point where it has a wall to dig out.... Therefore, it's now time to start digging!
@@ -103,8 +113,31 @@ void World::CreateRandom(RenderManager& RenderManager, CollisionSystem& Collisio
 		}
 	};
 
+	enum class direction
+	{
+		North = 0, South, East, West
+	};
+
+	auto Move = [](WorldPos CurrentPos, direction dir, uint magnitude)
+	{
+		switch (dir)
+		{
+		case direction::North: CurrentPos.y -= magnitude; break;
+		case direction::South: CurrentPos.y += magnitude; break;
+		case direction::East:  CurrentPos.x += magnitude; break;
+		case direction::West:  CurrentPos.x -= magnitude; break;
+		default: break;
+		}
+		return CurrentPos;
+	};
+
+	/*
+	 * So, because of things that are going to happen farther down the road... We need to change this code just a teensy tiny 
+	 * amount to return the maze that we have created in the form of a tree. A tree, by the way, I have wonderfully created.
+	 */
+
 	/* Because any problem can be solved with recursive lambda functions! */
-	std::function<bool(WorldPos)> Carve = [&deleteAt, &Carve, this] (WorldPos MinerPos)
+	std::function<Node<WorldPos>*(WorldPos)> Carve = [&deleteAt, &Carve, &Move, this] (WorldPos MinerPos)
 	{
 		/*
 		 * Delete the place we're currently at. Select a random direction, shift over there, and try to carve it out.
@@ -114,19 +147,15 @@ void World::CreateRandom(RenderManager& RenderManager, CollisionSystem& Collisio
 		 */
 
 		if (!At(MinerPos))
-			return false;
+			return static_cast<Node<WorldPos>*>(nullptr);
 		deleteAt(MinerPos);
-		enum class direction
-		{
-			North = 0, South, East, West
-		};
 		
 		auto Shuffle = [] (std::vector<direction> list)
 		{
 			std::stack<direction> result;
 			while(!list.empty())
 			{
-				uint selection = GetRandom<uint>(0, list.size());
+				uint selection = GetRandomUINT(0, list.size() - 1);
 				result.push(list[selection]);
 				list.erase(list.begin() + selection);
 			}
@@ -142,37 +171,108 @@ void World::CreateRandom(RenderManager& RenderManager, CollisionSystem& Collisio
 			return Shuffle(result);
 		}();
 
+		Node<WorldPos>* CurrentNode = new Node<WorldPos>();
+		CurrentNode->SetData(MinerPos);
+
 		while(!DirectionOrder.empty())
 		{
 
 			direction dir = DirectionOrder.top();
 			DirectionOrder.pop();
 			
-			auto Move = [] (WorldPos CurrentPos, direction dir, uint magnitude)
-			{
-				switch (dir)
-				{
-				case direction::North: CurrentPos.y -= magnitude; break;
-				case direction::South: CurrentPos.y += magnitude; break;
-				case direction::East:  CurrentPos.x += magnitude; break;
-				case direction::West:  CurrentPos.x -= magnitude; break;
-				default: break;
-				}
-				return CurrentPos;
-			};
 
 			WorldPos NextPos = Move(MinerPos, dir, 2);
+			Node<WorldPos>* NextNode = Carve(NextPos);
 
-			if(Carve(NextPos))
+			if (NextNode)
 			{
 				WorldPos MiddlePos = Move(MinerPos, dir, 1);
 				deleteAt(MiddlePos);
+				CurrentNode->AddChild(NextNode);
 			}
 		}
-		return true;
+
+		return CurrentNode;
 	};
 
-	Carve(MinerPos);
+	Node<WorldPos>* RootNode = Carve(StartPos);
+
+	/*
+	 * At this point, we have rooms and tunnels carved out of the walls. 
+	 * It is now time to connect some of the rooms to the hallways at certain locations. 
+	 */
+
+	for (auto Room : AllRooms)
+	{
+		auto TempRoom = Room;
+		--TempRoom.top;
+		--TempRoom.left;
+		TempRoom.height += 2;
+		TempRoom.width += 2;
+
+		std::vector<WorldPos> Walls;
+		
+		uint x = TempRoom.left + 2;
+		uint y = TempRoom.top;
+
+		//Add the top row
+		for (x = TempRoom.left + 1; x <= TempRoom.left + TempRoom.width; x += 2)
+			Walls.push_back(WorldPos(x, y));
+	
+		y = TempRoom.top + TempRoom.height - 1;
+
+		//Add the bottom row
+		for (x = TempRoom.left + 1; x <= TempRoom.left + TempRoom.width; x += 2)
+			Walls.push_back(WorldPos(x, y));
+
+		x = TempRoom.left;
+		
+		//Add the left side
+		for (y = TempRoom.top + 1; y <= TempRoom.top + TempRoom.height; y += 2)
+			Walls.push_back(WorldPos(x, y));
+
+		x = TempRoom.left + TempRoom.width - 1;
+
+		//Add the right side
+		for (y = TempRoom.top + 1; y <= TempRoom.top + TempRoom.height; y += 2)
+			Walls.push_back(WorldPos(x, y));
+
+
+
+		Walls = [](std::vector<WorldPos> list) // Fisher-Yates shuffling algo
+		{
+			std::vector<WorldPos> result;
+			while (!list.empty())
+			{
+				uint selection = GetRandomUINT(0, list.size() - 1);
+				result.push_back(list[selection]);
+				list.erase(list.begin() + selection);
+			}
+			return result;
+		}(Walls);
+
+		uint NumToDelete = GetRandomUINT(1, 3);
+
+		for (uint i = 0; i < NumToDelete; ++i)
+			deleteAt(Walls[i]);
+
+	}
+
+	/* 
+	* Finally, we have an area that is carved out. Rooms are open to the hallways. Everything is going well.
+	* It is at this point that We begin finding empty areas that are surrounded by 3 (or more...) walls. Close these,
+	* Until none remain.
+	*/
+
+	uint NumFilled = 1; // Because it doesn't *really* matter how many we fill in, we start this off at 1.
+
+	auto Fill = [&SpriteFactory, this] (WorldPos Pos)
+	{
+		Entity* wall = m_Entities[Pos.y * m_Dimensions.x + Pos.x];
+		wall = new Wall(SpriteFactory["*"]);
+		wall->SetWorldPos(WorldPos(Pos.x, Pos.y));
+		m_Entities[Pos.y * m_Dimensions.x + Pos.x] = wall;
+	};
 
 	for (uint x = 0; x < m_Dimensions.x; ++x)
 	{
@@ -189,7 +289,7 @@ void World::CreateRandom(RenderManager& RenderManager, CollisionSystem& Collisio
 
 Entity* World::operator[](WorldPos Coords)
 {
-	if(Coords.x <= m_Dimensions.x && Coords.y <= m_Dimensions.y)
+	if(Coords.x < m_Dimensions.x && Coords.y < m_Dimensions.y)
 		return m_Entities[Coords.y * m_Dimensions.x + Coords.x];
 	else return nullptr;
 }

@@ -36,7 +36,7 @@ int main(int argc, const char** argv)
 	CollisionSystem CollisionSystem;
 	RenderManager RenderManager;
 
-	World World(WorldPos(WINDOW_WIDTH / 16, WINDOW_HEIGHT / 16));
+	World World(WorldPos(WINDOW_WIDTH / 16 - 1, WINDOW_HEIGHT / 16 - 1));
 
 	World.CreateRandom(RenderManager, CollisionSystem, Factory);
 
