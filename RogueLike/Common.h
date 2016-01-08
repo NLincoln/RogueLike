@@ -6,6 +6,8 @@
 
 using uint = unsigned int;
 
+#ifdef _WIN32
+
 #ifdef _DEBUG
 #pragma comment (lib, "sfml-main-d.lib")
 #pragma comment (lib, "sfml-system-d.lib")
@@ -18,3 +20,4 @@ using uint = unsigned int;
 #pragma comment (lib, "sfml-graphics.lib")
 #endif
 
+#endif

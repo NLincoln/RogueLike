@@ -7,3 +7,5 @@ RogueLike/Debug/*
 *.user
 *.tlog
 *.idb
+bin/*
+.idea/*
