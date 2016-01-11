@@ -1,5 +1,11 @@
 #include "SpriteBlock.h"
+#include "RenderCommon.h"
 
+void SpriteBlock::SetWorldPos(WorldPos Pos)
+{
+	m_WorldPos = Pos;
+	setPosition(m_WorldPos.x * SPRITE_WIDTH, m_WorldPos.y * SPRITE_HEIGHT);
+}
 
 void SpriteBlock::AddSprite(sf::Sprite Sprite)
 {

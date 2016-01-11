@@ -14,6 +14,7 @@
 #include "Event.h"
 #include "MovementSystem.h"
 #include "World.h"
+#include "EnemyManager.h"
 
 template <typename T>
 T GetRandom(T min, T max)
@@ -28,19 +29,26 @@ int main(int argc, const char** argv)
 	sf::VideoMode Mode;
 	Mode.height = WINDOW_HEIGHT;
 	Mode.width = WINDOW_WIDTH;
-	SpriteFactory Factory("TileSet.png");
-	Window->create(Mode, "First Window");
+	SpriteFactory SpriteFactory("TileSet.png");
+	Window->create(Mode, "RogueLike");
 
 	EventManager EventManager;
 	MovementSystem MovementSystem(EventManager);
 	CollisionSystem CollisionSystem;
 	RenderManager RenderManager;
 
-	World World(WorldPos(WINDOW_WIDTH / 16 - 1, WINDOW_HEIGHT / 16 - 1));
 
-	World.CreateRandom(RenderManager, CollisionSystem, Factory);
+	WorldGenerator World(WorldPos(WINDOW_WIDTH / 16 - 1, WINDOW_HEIGHT / 16 - 1));
 
-	Player* p = new Player(Factory["@"], MovementSystem, CollisionSystem);
+	World.CreateRandom(RenderManager, CollisionSystem, SpriteFactory);
+
+	Player* p = new Player(SpriteFactory["@"], MovementSystem, CollisionSystem);
+
+	EnemyManager EnemyManager(MovementSystem, p);
+	Enemy* e = new Enemy(CollisionSystem, EnemyManager, &EventManager);
+	RenderManager.AddEntity(e);
+	e->SetSprite(SpriteFactory["E"]);
+	e->SetWorldPos(WorldPos(1, 3));
 
 	EventCallback Switch = [&] (EventType Type)
 	{
@@ -57,6 +65,9 @@ int main(int argc, const char** argv)
 		}
 	};
 
+	EventCallback Kill = [&] (EventType Type)
+	{
+	};
 
 	EventCallback Close = [&] (EventType Type)
 	{
@@ -65,6 +76,7 @@ int main(int argc, const char** argv)
 
 	EventManager.AddHook(ERange::NumKey, Switch);
 	EventManager.AddHook(EventType::EXIT_GAME, Close);
+	EventManager.AddHook(EventType::ENEMY_DEATH, Kill);
 
 	RenderManager.SetRenderTarget(Window);
 	while (Window->isOpen())

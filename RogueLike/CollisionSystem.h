@@ -2,7 +2,7 @@
 #include "Entity.h"
 #include <functional>
 
-using CollisionCallback = std::function<bool(WorldPos)>;
+using CollisionCallback = std::function<Entity*(WorldPos)>;
 
 class CollisionSystem
 {

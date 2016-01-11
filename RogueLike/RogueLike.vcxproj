@@ -160,7 +160,11 @@
   <ItemGroup>
     <ClCompile Include="CollisionSystem.cpp" />
     <ClCompile Include="Cursor.cpp" />
+    <ClCompile Include="DamageSystem.cpp" />
+    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="EnemyManager.cpp" />
     <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="Item.cpp" />
     <ClCompile Include="MovementSystem.cpp" />
     <ClCompile Include="Event.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -169,7 +173,6 @@
     <ClCompile Include="RenderManager.cpp" />
     <ClCompile Include="SpriteBlock.cpp" />
     <ClCompile Include="SpriteFactory.cpp" />
-    <ClCompile Include="Tree.cpp" />
     <ClCompile Include="Wall.cpp" />
     <ClCompile Include="World.cpp" />
   </ItemGroup>
@@ -177,7 +180,12 @@
     <ClInclude Include="CollisionSystem.h" />
     <ClInclude Include="Common.h" />
     <ClInclude Include="Cursor.h" />
+    <ClInclude Include="DamageSystem.h" />
+    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="EnemyManager.h" />
     <ClInclude Include="Entity.h" />
+    <ClInclude Include="EntityCommon.h" />
+    <ClInclude Include="Item.h" />
     <ClInclude Include="MovementSystem.h" />
     <ClInclude Include="Event.h" />
     <ClInclude Include="Component.h" />

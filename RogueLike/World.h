@@ -5,7 +5,7 @@
 
 class RenderManager;
 
-class World
+class WorldGenerator
 {
 	std::vector<Entity*> m_Entities;
 	sf::Vector2u m_Dimensions;
@@ -17,7 +17,7 @@ public:
 	Entity* operator[](WorldPos Coords);
 
 
-	World(sf::Vector2u Dimensions);
-	~World();
+	WorldGenerator(sf::Vector2u Dimensions);
+	~WorldGenerator();
 };
 

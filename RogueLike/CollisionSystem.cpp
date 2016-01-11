@@ -14,8 +14,8 @@ CollisionCallback CollisionSystem::GetCallback()
 	{
 		for (auto Entity : m_Entities)
 			if (Entity->GetWorldPos() == NewPos)
-				return false;
-		return true;
+				return Entity;
+		return static_cast<Entity*>(nullptr);
 	};
 }
 

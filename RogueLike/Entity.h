@@ -5,6 +5,11 @@
 #include "SpriteBlock.h"
 #include "RenderCommon.h"
 
+struct EntityDescription
+{
+
+};
+
 class Entity : public sf::Drawable, public sf::Transformable
 {
 protected:
@@ -17,7 +22,6 @@ public:
 	void SetWorldPos(WorldPos NewPos);
 
 	void SetSprite(SpriteBlock sprite);
-
 
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 

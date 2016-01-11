@@ -1,4 +1,5 @@
 #include "World.h"
+#include "EntityCommon.h"
 #include "RenderManager.h"
 #include "Wall.h"
 #include "SpriteFactory.h"
@@ -22,12 +23,12 @@ uint GetRandomUINT(uint min, uint max)
 }
 
 
-Entity* World::At(WorldPos Coords)
+Entity* WorldGenerator::At(WorldPos Coords)
 {
 	return operator[](Coords);
 }
 
-void World::CreateRandom(RenderManager& RenderManager, CollisionSystem& CollisionSystem, SpriteFactory& SpriteFactory)
+void WorldGenerator::CreateRandom(RenderManager& RenderManager, CollisionSystem& CollisionSystem, SpriteFactory& SpriteFactory)
 {
 	struct desc
 	{
@@ -113,31 +114,13 @@ void World::CreateRandom(RenderManager& RenderManager, CollisionSystem& Collisio
 		}
 	};
 
-	enum class direction
-	{
-		North = 0, South, East, West
-	};
-
-	auto Move = [](WorldPos CurrentPos, direction dir, uint magnitude)
-	{
-		switch (dir)
-		{
-		case direction::North: CurrentPos.y -= magnitude; break;
-		case direction::South: CurrentPos.y += magnitude; break;
-		case direction::East:  CurrentPos.x += magnitude; break;
-		case direction::West:  CurrentPos.x -= magnitude; break;
-		default: break;
-		}
-		return CurrentPos;
-	};
-
 	/*
 	 * So, because of things that are going to happen farther down the road... We need to change this code just a teensy tiny 
 	 * amount to return the maze that we have created in the form of a tree. A tree, by the way, I have wonderfully created.
 	 */
 
 	/* Because any problem can be solved with recursive lambda functions! */
-	std::function<Node<WorldPos>*(WorldPos)> Carve = [&deleteAt, &Carve, &Move, this] (WorldPos MinerPos)
+	std::function<Node<WorldPos>*(WorldPos)> Carve = [&deleteAt, &Carve, this] (WorldPos MinerPos)
 	{
 		/*
 		 * Delete the place we're currently at. Select a random direction, shift over there, and try to carve it out.
@@ -287,13 +270,13 @@ void World::CreateRandom(RenderManager& RenderManager, CollisionSystem& Collisio
 	}
 }
 
-Entity* World::operator[](WorldPos Coords)
+Entity* WorldGenerator::operator[](WorldPos Coords)
 {
 	if(Coords.x < m_Dimensions.x && Coords.y < m_Dimensions.y)
 		return m_Entities[Coords.y * m_Dimensions.x + Coords.x];
 	else return nullptr;
 }
 
-World::World(sf::Vector2u Dimensions = sf::Vector2u(WINDOW_WIDTH + 1, WINDOW_HEIGHT + 1)) : m_Dimensions(Dimensions) { }
+WorldGenerator::WorldGenerator(sf::Vector2u Dimensions = sf::Vector2u(WINDOW_WIDTH + 1, WINDOW_HEIGHT + 1)) : m_Dimensions(Dimensions) { }
 
-World::~World() { }
+WorldGenerator::~WorldGenerator() { }

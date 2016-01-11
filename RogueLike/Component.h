@@ -15,4 +15,21 @@ namespace Comp
 		Obstruction(std::function<void()> DestroyedCallback);
 		~Obstruction();
 	};
+
+	class Health
+	{
+		int m_Health;
+		int m_DeathHP;
+		std::function<void()> m_DeathCallback;
+	public:
+		void SetDeathHP(int DeathHP);
+
+		int GetHealth() const;
+		void SetHealth(int Health);
+		int ReceiveDamage(int Damage);
+
+		Health(std::function<void()> DeathCallback);
+		~Health();
+	};
+
 }
