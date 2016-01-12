@@ -5,6 +5,7 @@
 #include "CollisionSystem.h"
 #include "Component.h"
 
+class RenderManager;
 class CollisionSystem;
 class EnemyManager;
 class EventManager;
@@ -23,11 +24,12 @@ class Enemy : public Entity
 
 
 	int m_Health;
-
+	int m_DeathHP;
 public:
+	bool isDead() const; 
 	void ReceiveDamage(int Damage);
 
-	Enemy(CollisionSystem& CollisionSystem, EnemyManager& EnemyManager, EventManager* EventHandler);
+	Enemy(RenderManager& RenderManager, CollisionSystem& CollisionSystem, EnemyManager& EnemyManager, EventManager* EventHandler);
 
 	~Enemy();
 };

@@ -8,6 +8,11 @@ void CollisionSystem::AddEntity(Entity* NewEntity)
 	
 }
 
+void CollisionSystem::RemoveEntity(Entity* ToRemove)
+{
+	m_Entities.erase(std::find(m_Entities.begin(), m_Entities.end(), ToRemove));
+}
+
 CollisionCallback CollisionSystem::GetCallback()
 {
 	return [&] (WorldPos NewPos)

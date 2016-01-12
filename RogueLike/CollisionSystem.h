@@ -9,6 +9,7 @@ class CollisionSystem
 	std::vector<Entity*> m_Entities;
 public:
 	void AddEntity(Entity* NewEntity);
+	void RemoveEntity(Entity* ToRemove);
 	CollisionCallback GetCallback();
 
 	CollisionSystem();

@@ -13,7 +13,12 @@ void EnemyManager::AddHook(EventRange Range, EventCallback Callback)
 		AddHook(static_cast<EventType>(i), Callback);
 }
 
-EnemyManager::EnemyManager(MovementSystem& MovementSystem, Player* p)
+void EnemyManager::AddEntity(Enemy* NewEntity)
+{
+	m_Entities.push_back(NewEntity);
+}
+
+EnemyManager::EnemyManager(EventManager& EventManager, MovementSystem& MovementSystem, Player* p)
 {
 	MovementSystem.AddHook(ERange::Movement, p, [&](EventType Type)
 	{

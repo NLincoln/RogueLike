@@ -11,6 +11,7 @@ class RenderManager
 
 public:
 	void AddEntity(Entity* ent);
+	void RemoveEntity(Entity* ToRemove);
 
 	void SetRenderTarget(sf::RenderTarget* target);
 

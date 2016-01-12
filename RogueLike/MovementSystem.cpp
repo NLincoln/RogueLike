@@ -28,8 +28,15 @@ void MovementSystem::AddEntity(Entity* NewEntity)
 	m_Entities.push_back(NewEntity);
 }
 
+void MovementSystem::RemoveEntity(Entity* ToRemove)
+{
+	m_Entities.erase(std::find(m_Entities.begin(), m_Entities.end(), ToRemove));
+	m_EntityCallbacks.erase(ToRemove);
+}
+
 MovementSystem::MovementSystem(EventManager& Manager)
 {
+	m_FocusEntity = nullptr;
 	Manager.AddHook(ERange::Movement, [&] (EventType Type)
 	{
 		for (auto Callback : m_EntityCallbacks[m_FocusEntity][Type])

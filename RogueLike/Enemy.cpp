@@ -5,21 +5,31 @@
 #include "EntityCommon.h"
 #include "Player.h"
 #include "Event.h"
+#include "RenderManager.h"
+
+bool Enemy::isDead() const
+{
+	return m_Health <= m_DeathHP;
+}
 
 void Enemy::ReceiveDamage(int Damage)
 {
 	m_Health -= Damage;
-	if (m_Health < 0)
+	if (m_Health <= m_DeathHP)
 		m_EventManagerRef->HandleEvent(EventType::ENEMY_DEATH);
 }
 
-Enemy::Enemy(CollisionSystem& CollisionSystem, EnemyManager& EnemyManager, EventManager* EventManager) 
+Enemy::Enemy(RenderManager& RenderManager, CollisionSystem& CollisionSystem, EnemyManager& EnemyManager, EventManager* EventManager)
 {
+	m_Health = 100;
+	m_DeathHP = 0;
+
 	m_EventManagerRef = EventManager;
 	Item Sword;
 	Sword.SetDamage(40);
 	m_Inventory.push_back(Sword);
 
+	RenderManager.AddEntity(this);
 	CollisionSystem.AddEntity(this);
 	m_CollisionCallback = CollisionSystem.GetCallback();
 	EnemyManager.AddHook(ERange::Movement, [&] (EventType Type)
@@ -33,6 +43,13 @@ Enemy::Enemy(CollisionSystem& CollisionSystem, EnemyManager& EnemyManager, Event
 			
 		}
 	});
+
+	EventManager->AddHook(EventType::ENEMY_DEATH, [&] (EventType Type)
+	{
+		RenderManager.RemoveEntity(this);
+		CollisionSystem.RemoveEntity(this);
+	});
+
 }
 
 Enemy::~Enemy()

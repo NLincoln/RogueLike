@@ -18,6 +18,7 @@ public:
 	void AddHook(const EventType  Type, Entity* Entity, EventCallback Callback);
 
 	void AddEntity(Entity* NewEntity);
+	void RemoveEntity(Entity* Entity);
 
 	MovementSystem(EventManager& Manager);
 

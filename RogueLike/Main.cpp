@@ -44,9 +44,8 @@ int main(int argc, const char** argv)
 
 	Player* p = new Player(SpriteFactory["@"], MovementSystem, CollisionSystem);
 
-	EnemyManager EnemyManager(MovementSystem, p);
-	Enemy* e = new Enemy(CollisionSystem, EnemyManager, &EventManager);
-	RenderManager.AddEntity(e);
+	EnemyManager EnemyManager(EventManager, MovementSystem, p);
+	Enemy* e = new Enemy(RenderManager, CollisionSystem, EnemyManager, &EventManager);
 	e->SetSprite(SpriteFactory["E"]);
 	e->SetWorldPos(WorldPos(1, 3));
 

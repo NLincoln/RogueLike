@@ -7,6 +7,11 @@ void RenderManager::AddEntity(Entity* ent)
 		m_Entities.push_back(ent);
 }
 
+void RenderManager::RemoveEntity(Entity* ToRemove)
+{
+	m_Entities.erase(std::find(m_Entities.begin(), m_Entities.end(), ToRemove));
+}
+
 void RenderManager::SetRenderTarget(sf::RenderTarget* target)
 {
 	m_RenderTarget = target;
