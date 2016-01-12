@@ -14,6 +14,8 @@ public:
 
 	void AddSprite(sf::Sprite Sprite);
 
+	void SetColor(sf::Color Color);
+
 	SpriteBlock();
 	~SpriteBlock();
 

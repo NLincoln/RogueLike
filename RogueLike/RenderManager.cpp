@@ -20,7 +20,7 @@ void RenderManager::SetRenderTarget(sf::RenderTarget* target)
 void RenderManager::Draw()
 {
 	if(m_RenderTarget)
-		for (Entity* entity : m_Entities)
+		for (auto entity : m_Entities)
 			m_RenderTarget->draw(*entity);	
 }
 

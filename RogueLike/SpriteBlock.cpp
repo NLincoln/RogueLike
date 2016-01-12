@@ -12,6 +12,12 @@ void SpriteBlock::AddSprite(sf::Sprite Sprite)
 	m_SpriteList.push_back(Sprite);
 }
 
+void SpriteBlock::SetColor(sf::Color Color)
+{
+	for (auto& Sprite : m_SpriteList)
+		Sprite.setColor(Color);
+}
+
 SpriteBlock::SpriteBlock()
 {
 }
