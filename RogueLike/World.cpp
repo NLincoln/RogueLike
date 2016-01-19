@@ -28,6 +28,46 @@ Entity* WorldGenerator::At(WorldPos Coords)
 	return operator[](Coords);
 }
 
+std::vector<Entity*> WorldGenerator::FindLine(WorldPos Start, WorldPos End)
+{
+	std::vector<Entity*> Result;
+
+	if (Start.x == End.x)
+	{
+		uint x = Start.x;
+		for (uint y = Start.y; y <= End.y; ++y)
+			Result.push_back(At(WorldPos(x, y)));
+		return Result;
+	}
+
+	const double DeltaX = End.x - static_cast<double>(Start.x);
+	const double DeltaY = End.y - static_cast<double>(Start.y);
+	const double DeltaErr = std::abs(DeltaY / DeltaX);
+
+	double Error = 0;
+
+	int y = Start.y;
+
+	for (uint x = Start.x; x <= End.x; ++x)
+	{
+		Result.push_back(At(WorldPos(x, y)));
+		Error += DeltaErr;
+
+		while (Error >= 0.5)
+		{
+			Result.push_back(At(WorldPos(x, y)));
+			y += (DeltaY > 0) ? 1 : -1;
+			Error -= 1;
+		}
+	}
+	return Result;
+}
+
+std::vector<Entity*> WorldGenerator::CalcFOV(WorldPos Position)
+{
+	
+}
+
 void WorldGenerator::CreateRandom(RenderManager& RenderManager, CollisionSystem& CollisionSystem, SpriteFactory& SpriteFactory)
 {
 	struct desc
@@ -275,6 +315,11 @@ Entity* WorldGenerator::operator[](WorldPos Coords)
 	if(Coords.x < m_Dimensions.x && Coords.y < m_Dimensions.y)
 		return m_Entities[Coords.y * m_Dimensions.x + Coords.x];
 	else return nullptr;
+}
+
+Entity* WorldGenerator::operator()(WorldPos Coords)
+{
+	return operator[](Coords);
 }
 
 WorldGenerator::WorldGenerator(sf::Vector2u Dimensions = sf::Vector2u(WINDOW_WIDTH + 1, WINDOW_HEIGHT + 1)) : m_Dimensions(Dimensions) { }

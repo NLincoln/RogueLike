@@ -32,20 +32,21 @@ int main(int argc, const char** argv)
 	SpriteFactory SpriteFactory("TileSet.png");
 	Window->create(Mode, "RogueLike");
 
+	Player* p = nullptr;
+
 	EventManager EventManager;
 	MovementSystem MovementSystem(EventManager);
 	CollisionSystem CollisionSystem;
-	RenderManager RenderManager;
+	RenderManager RenderManager(p);
 
 
 	WorldGenerator World(WorldPos(WINDOW_WIDTH / 16 - 1, WINDOW_HEIGHT / 16 - 1));
-
 	World.CreateRandom(RenderManager, CollisionSystem, SpriteFactory);
 
-	Player* p = new Player(SpriteFactory["@"], MovementSystem, CollisionSystem);
+	p = new Player(SpriteFactory["@"], RenderManager, MovementSystem, CollisionSystem, &EventManager, &World);
 
 	EnemyManager EnemyManager(EventManager, MovementSystem, p);
-	Enemy* e = new Enemy(RenderManager, CollisionSystem, EnemyManager, &EventManager);
+	Enemy* e = new Enemy(RenderManager, CollisionSystem, EnemyManager, &EventManager, &World);
 	e->SetSprite(SpriteFactory["E"]);
 	e->SetWorldPos(WorldPos(1, 3));
 
@@ -55,17 +56,11 @@ int main(int argc, const char** argv)
 		{
 		case EventType::NUMPAD_2:
 			p->SetWorldPos(WorldPos(1, 1));
-			RenderManager.AddEntity(p);
-			CollisionSystem.AddEntity(p);
 
 			MovementSystem.SetFocus(p);
 			break;
 		default: break;
 		}
-	};
-
-	EventCallback Kill = [&] (EventType Type)
-	{
 	};
 
 	EventCallback Close = [&] (EventType Type)
@@ -75,7 +70,6 @@ int main(int argc, const char** argv)
 
 	EventManager.AddHook(ERange::NumKey, Switch);
 	EventManager.AddHook(EventType::EXIT_GAME, Close);
-	EventManager.AddHook(EventType::ENEMY_DEATH, Kill);
 
 	RenderManager.SetRenderTarget(Window);
 	while (Window->isOpen())
@@ -93,5 +87,10 @@ int main(int argc, const char** argv)
 		RenderManager.Draw();
 		Window->display();
 	}
+
+	delete p;
+	delete e;
+
+
 	return 0;
 }

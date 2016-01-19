@@ -1,5 +1,6 @@
 #include "RenderManager.h"
 #include "Entity.h"
+#include "Player.h"
 
 void RenderManager::AddEntity(Entity* ent)
 {
@@ -24,9 +25,11 @@ void RenderManager::Draw()
 			m_RenderTarget->draw(*entity);	
 }
 
-RenderManager::RenderManager(sf::RenderTarget* target)
+RenderManager::RenderManager(Player* Player)
 {
-	m_RenderTarget = target;
+	m_RenderTarget = nullptr;
+	m_PlayerRef = Player;
+
 }
 
 

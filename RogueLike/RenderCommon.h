@@ -10,3 +10,6 @@ const uint WINDOW_WIDTH = 16 * 80;
 
 const uint SPRITE_HEIGHT = 16;
 const uint SPRITE_WIDTH = 16;
+
+const uint WORLD_HEIGHT = 50;
+const uint WORLD_WIDTH = 80;

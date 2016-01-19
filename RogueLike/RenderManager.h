@@ -2,10 +2,13 @@
 
 #include <SFML/Graphics.hpp>
 
+class Player;
 class Entity;
 
 class RenderManager
 {
+	Player* m_PlayerRef;
+
 	sf::RenderTarget* m_RenderTarget;
 	std::vector<Entity*> m_Entities;
 
@@ -17,7 +20,7 @@ public:
 
 	void Draw();
 
-	RenderManager(sf::RenderTarget* target = nullptr);
+	RenderManager(Player* Player);
 	~RenderManager();
 };
 
