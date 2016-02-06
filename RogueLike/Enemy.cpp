@@ -17,8 +17,6 @@ std::function<void(EventType)> Enemy::MovementCallback()
 		if (Result == nullptr)
 			m_WorldPos = NextPos;
 
-
-
 		else if (auto Temp = dynamic_cast<Player*>(Result))
 		{
 			Temp->ReceiveDamage(CalculateDamage(m_Inventory[0], Temp));
@@ -40,7 +38,7 @@ void Enemy::ReceiveDamage(int Damage)
 
 Enemy::Enemy(RenderManager& RenderManager, CollisionSystem& CollisionSystem, EnemyManager& EnemyManager, EventManager* EventManager, WorldGenerator* World)
 {
-	m_Health = 100;
+	m_Health  = m_MaxHP = 100;
 	m_DeathHP = 0;
 
 	m_WorldRef = World;

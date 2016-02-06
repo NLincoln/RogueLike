@@ -24,7 +24,7 @@ class Enemy : public Entity
 
 	EventManager* m_EventManagerRef;
 	WorldGenerator* m_WorldRef;
-
+	int m_MaxHP;
 	int m_Health;
 	int m_DeathHP;
 public:
@@ -36,5 +36,7 @@ public:
 	Enemy(RenderManager& RenderManager, CollisionSystem& CollisionSystem, EnemyManager& EnemyManager, EventManager* EventManager, WorldGenerator* World);
 
 	~Enemy();
+
+	friend class RenderManager;
 };
 

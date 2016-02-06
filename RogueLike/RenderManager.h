@@ -18,7 +18,7 @@ public:
 
 	void SetRenderTarget(sf::RenderTarget* target);
 
-	void Draw();
+	void Draw() const;
 
 	RenderManager(Player* Player);
 	~RenderManager();
