@@ -36,7 +36,6 @@ void Enemy::ReceiveDamage(int Damage)
 	m_Health -= Damage;
 	if (m_Health <= m_DeathHP)
 		m_EventManagerRef->HandleEvent(EventType::ENEMY_DEATH);
-	m_Sprite.SetColor(sf::Color(m_Health, 0, 0));
 }
 
 Enemy::Enemy(RenderManager& RenderManager, CollisionSystem& CollisionSystem, EnemyManager& EnemyManager, EventManager* EventManager, WorldGenerator* World)

@@ -27,5 +27,7 @@ public:
 
 	Entity();
 	~Entity();
+
+	friend class RenderManager;
 };
 

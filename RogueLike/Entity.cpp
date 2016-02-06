@@ -1,4 +1,5 @@
 #include "Entity.h"
+#include "Player.h"
 
 
 WorldPos Entity::GetWorldPos() const
@@ -24,15 +25,7 @@ void Entity::SetSprite(SpriteBlock sprite)
 
 void Entity::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	SpriteBlock copy = m_Sprite;
-
-	RenderPos RenderPos;
-	RenderPos.x = m_WorldPos.x * SPRITE_WIDTH;
-	RenderPos.y = m_WorldPos.y * SPRITE_HEIGHT;
-
-	copy.setPosition(RenderPos);
-
-	target.draw(copy);
+	// This is all handled in the RenderManager now!
 }
 
 Entity::Entity()

@@ -22,6 +22,11 @@ uint GetRandomUINT(uint min, uint max)
 	return uni(rng);
 }
 
+double GetRandomFloat()
+{
+	uint max = GetRandomUINT(0, UINT_MAX);
+	return static_cast<double>(max) / UINT_MAX;
+}
 
 Entity* WorldGenerator::At(WorldPos Coords)
 {
@@ -65,7 +70,8 @@ std::vector<Entity*> WorldGenerator::FindLine(WorldPos Start, WorldPos End)
 
 std::vector<Entity*> WorldGenerator::CalcFOV(WorldPos Position)
 {
-	
+	std::vector<Entity*> result;
+	return result;
 }
 
 void WorldGenerator::CreateRandom(RenderManager& RenderManager, CollisionSystem& CollisionSystem, SpriteFactory& SpriteFactory)
@@ -153,11 +159,6 @@ void WorldGenerator::CreateRandom(RenderManager& RenderManager, CollisionSystem&
 			m_Entities[Coords.y * m_Dimensions.x + Coords.x] = nullptr;
 		}
 	};
-
-	/*
-	 * So, because of things that are going to happen farther down the road... We need to change this code just a teensy tiny 
-	 * amount to return the maze that we have created in the form of a tree. A tree, by the way, I have wonderfully created.
-	 */
 
 	/* Because any problem can be solved with recursive lambda functions! */
 	std::function<Node<WorldPos>*(WorldPos)> Carve = [&deleteAt, &Carve, this] (WorldPos MinerPos)

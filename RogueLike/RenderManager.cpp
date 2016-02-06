@@ -22,7 +22,11 @@ void RenderManager::Draw()
 {
 	if(m_RenderTarget)
 		for (auto entity : m_Entities)
-			m_RenderTarget->draw(*entity);	
+		{
+			auto Block = entity->m_Sprite;
+			Block.setPosition(entity->GetWorldPos().x * SPRITE_WIDTH, entity->GetWorldPos().y * SPRITE_HEIGHT);
+			m_RenderTarget->draw(Block);
+		}
 }
 
 RenderManager::RenderManager(Player* Player)
