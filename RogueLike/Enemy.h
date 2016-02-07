@@ -26,6 +26,10 @@ class Enemy : public Entity
 	EventManager* m_EventManagerRef;
 	WorldGenerator* m_WorldRef;
 
+	WorldPos m_PrevTarget;
+	bool m_PrevTargetIsSet;
+
+
 	int m_MaxHP;
 	int m_Health;
 	int m_DeathHP;

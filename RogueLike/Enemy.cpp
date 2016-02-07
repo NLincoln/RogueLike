@@ -24,29 +24,41 @@ std::function<void(EventType)> Enemy::MovementCallback()
 				break;
 			}
 		}
+
+		auto MoveTowards = [] (WorldPos Start, WorldPos Dest)
+		{
+			direction result;
+
+			sf::Vector2i delta = sf::Vector2i(Dest.x - Start.x, Dest.y - Start.y);
+			if (delta.x > 0 && abs(delta.x) > abs(delta.y))
+				result = direction::East;
+			else if (delta.x <= 0 && abs(delta.x) > abs(delta.y))
+				result = direction::West;
+			else if (delta.y > 0 && abs(delta.y) > abs(delta.x))
+				result = direction::South;
+			else
+				result = direction::North;
+			return result;
+		};
+
 		if (HasLOS)
 		{
+			m_PrevTargetIsSet = true;
 			WorldPos PlayerLoc = m_EnemyManagerRef->GetPlayerLoc();
-			WorldPos NextPos;
-
-			sf::Vector2i delta = sf::Vector2i(PlayerLoc.x - m_WorldPos.x, PlayerLoc.y - m_WorldPos.y);
-			if (delta.x > 0 && abs(delta.x) > abs(delta.y))
-				NextPos = Move(m_WorldPos, direction::East);
-			else if (delta.x <= 0 && abs(delta.x) > abs(delta.y))
-				NextPos = Move(m_WorldPos, direction::West);
-			else if (delta.y > 0 && abs(delta.y) > abs(delta.x))
-				NextPos = Move(m_WorldPos, direction::South);
-			else
-				NextPos = Move(m_WorldPos, direction::North);
+			m_PrevTarget = PlayerLoc;
+			WorldPos NextPos = Move(m_WorldPos, MoveTowards(m_WorldPos, PlayerLoc));
 
 			Entity* Result = m_CollisionCallback(NextPos);
 			if (Result == nullptr)
 				m_WorldPos = NextPos;
-
 			else if (auto Temp = dynamic_cast<Player*>(Result))
-			{
-				Temp->ReceiveDamage(CalculateDamage(m_Inventory[0], Temp));
-			}
+				if (m_Health > m_DeathHP)
+					Temp->ReceiveDamage(CalculateDamage(m_Inventory[0], Temp));
+		}
+		else
+		{
+			if(m_PrevTargetIsSet)
+				m_WorldPos = Move(m_WorldPos, MoveTowards(m_WorldPos, m_PrevTarget));
 		}
 	};
 }
@@ -59,12 +71,13 @@ bool Enemy::isDead() const
 void Enemy::ReceiveDamage(int Damage)
 {
 	m_Health -= Damage;
-	if (m_Health <= m_DeathHP)
+	if (!isDead())
 		m_EventManagerRef->HandleEvent(EventType::ENEMY_DEATH);
 }
 
 Enemy::Enemy(RenderManager& RenderManager, CollisionSystem& CollisionSystem, EnemyManager* EnemyManager, EventManager* EventManager, WorldGenerator* World)
 {
+	m_PrevTargetIsSet = false;
 	m_Health  = m_MaxHP = 100;
 	m_DeathHP = 0;
 
