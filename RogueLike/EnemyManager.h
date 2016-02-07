@@ -12,12 +12,15 @@ class EnemyManager
 {
 	std::map<EventType, std::vector<EventCallback>> m_EnemyCallbacks;
 	std::vector<Enemy*> m_Entities;
+	Player* m_PlayerRef;
 
 public:
 	void AddHook(EventType Type, EventCallback Callback);
 	void AddHook(EventRange Range, EventCallback Callback);
 
 	void AddEntity(Enemy* NewEntity);
+
+	WorldPos GetPlayerLoc() const;
 
     EnemyManager(EventManager& EventManager, MovementSystem& MovementSystem, Player* p);
 	~EnemyManager();

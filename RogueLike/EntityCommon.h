@@ -7,7 +7,7 @@ enum class direction
 	North = 0, South, East, West
 };
 
-inline WorldPos Move(WorldPos CurrentPos, direction dir, uint magnitude) 
+inline WorldPos Move(WorldPos CurrentPos, direction dir, uint magnitude = 1) 
 {
 	switch (dir)
 	{

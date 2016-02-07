@@ -46,7 +46,7 @@ int main(int argc, const char** argv)
 	p = new Player(SpriteFactory["@"], RenderManager, MovementSystem, CollisionSystem, &EventManager, &World);
 
 	EnemyManager EnemyManager(EventManager, MovementSystem, p);
-	Enemy* e = new Enemy(RenderManager, CollisionSystem, EnemyManager, &EventManager, &World);
+	Enemy* e = new Enemy(RenderManager, CollisionSystem, &EnemyManager, &EventManager, &World);
 	e->SetSprite(SpriteFactory["E"]);
 	e->SetWorldPos(WorldPos(1, 3));
 

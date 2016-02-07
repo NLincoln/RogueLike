@@ -18,8 +18,14 @@ void EnemyManager::AddEntity(Enemy* NewEntity)
 	m_Entities.push_back(NewEntity);
 }
 
+WorldPos EnemyManager::GetPlayerLoc() const
+{
+	return m_PlayerRef->GetWorldPos();
+}
+
 EnemyManager::EnemyManager(EventManager& EventManager, MovementSystem& MovementSystem, Player* p)
 {
+	m_PlayerRef = p;
 	MovementSystem.AddHook(ERange::Movement, p, [&](EventType Type)
 	{
 		auto Callbacks = m_EnemyCallbacks[Type];
