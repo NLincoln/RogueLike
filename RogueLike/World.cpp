@@ -304,6 +304,32 @@ void WorldGenerator::CreateRandom(RenderManager& RenderManager, CollisionSystem&
 		{
 			if(At(WorldPos(x, y)))
 			{
+				std::map<direction, bool> Edges = [this] (Entity* Entity)
+				{
+					std::map<direction, bool> result;
+					for (uint i = 0; i < 4; ++i)
+					{
+						direction dir = static_cast<direction>(i);
+						WorldPos NeighborPos = Move(Entity->GetWorldPos(), dir);
+						if (dynamic_cast<Wall*>(At(NeighborPos)))
+							result[dir] = true;
+						else
+							result[dir] = false;
+					}
+					return result;
+				}(At(WorldPos(x, y)));
+				Entity* Ent = At(WorldPos(x, y));
+				bool North = Edges[direction::North];
+				bool South = Edges[direction::South];
+				bool East = Edges[direction::East];
+				bool West = Edges[direction::West];
+
+				if (North && !East && South && !West)
+					Ent->SetSprite(SpriteFactory[SPRITENAMES::UP_DOWN]);
+				else if (!North && East && !South && West)
+					Ent->SetSprite(SpriteFactory[SPRITENAMES::LEFT_RIGHT]);
+
+
 				RenderManager.AddEntity(At(WorldPos(x, y)));
 				CollisionSystem.AddEntity(At(WorldPos(x, y)));
 			}
