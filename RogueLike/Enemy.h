@@ -29,7 +29,6 @@ class Enemy : public Entity
 
 	StateType m_CurrentState;
 
-
 	EnemyManager* m_EnemyManagerRef;
 	EventManager* m_EventManagerRef;
 	WorldGenerator* m_WorldRef;
@@ -40,7 +39,6 @@ class Enemy : public Entity
 	int m_Health;
 	int m_DeathHP;
 
-	std::map<StateType, AIFunction> InitializeAI();
 public:
 	std::function<void(EventType)> MovementCallback();
 

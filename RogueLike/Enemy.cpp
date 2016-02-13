@@ -24,7 +24,7 @@ std::function<void(EventType)> Enemy::MovementCallback()
 				result = direction::East;
 			else if (delta.x <= 0 && abs(delta.x) > abs(delta.y))
 				result = direction::West;
-			else if (delta.y > 0 && abs(delta.y) > abs(delta.x))
+			else if (delta.y >= 0 && abs(delta.y) > abs(delta.x))
 				result = direction::South;
 			else
 				result = direction::North;

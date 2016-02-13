@@ -37,8 +37,7 @@ int main(int argc, const char** argv)
 	EventManager EventManager;
 	MovementSystem MovementSystem(EventManager);
 	CollisionSystem CollisionSystem;
-	RenderManager RenderManager(p);
-
+	RenderManager RenderManager;
 
 	WorldGenerator World(WorldPos(WINDOW_WIDTH / 16 - 1, WINDOW_HEIGHT / 16 - 1));
 	World.CreateRandom(RenderManager, CollisionSystem, SpriteFactory);
@@ -56,7 +55,7 @@ int main(int argc, const char** argv)
 		{
 		case EventType::NUMPAD_2:
 			p->SetWorldPos(WorldPos(1, 1));
-
+			RenderManager.SetFocus(p);
 			MovementSystem.SetFocus(p);
 			break;
 		default: break;
