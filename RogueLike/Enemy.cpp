@@ -13,19 +13,9 @@ std::function<void(EventType)> Enemy::MovementCallback()
 {
 	return [&](EventType Type)
 	{
-		auto Line = m_WorldRef->FindLine(m_WorldPos, m_EnemyManagerRef->GetPlayerLoc());
-		bool HasLOS = true;
+		std::map<StateType, AIFunction> AIStates;
 
-		for (auto point : Line)
-		{
-			if (dynamic_cast<Wall*>(point))
-			{
-				HasLOS = false;
-				break;
-			}
-		}
-
-		auto MoveTowards = [] (WorldPos Start, WorldPos Dest)
+		auto MoveTowards = [](WorldPos Start, WorldPos Dest)
 		{
 			direction result;
 
@@ -41,25 +31,72 @@ std::function<void(EventType)> Enemy::MovementCallback()
 			return result;
 		};
 
-		if (HasLOS)
+		auto HasLOS = [this]() mutable
 		{
-			m_PrevTargetIsSet = true;
-			WorldPos PlayerLoc = m_EnemyManagerRef->GetPlayerLoc();
-			m_PrevTarget = PlayerLoc;
-			WorldPos NextPos = Move(m_WorldPos, MoveTowards(m_WorldPos, PlayerLoc));
+			auto Line = m_WorldRef->FindLine(m_WorldPos, m_EnemyManagerRef->GetPlayerLoc());
+			for (auto point : Line)
+			{
+				if (dynamic_cast<Wall*>(point))
+				{
+					return false;
+				}
+			}
+			return true;
+		};
 
-			Entity* Result = m_CollisionCallback(NextPos);
-			if (Result == nullptr)
-				m_WorldPos = NextPos;
-			else if (auto Temp = dynamic_cast<Player*>(Result))
-				if (m_Health > m_DeathHP)
-					Temp->ReceiveDamage(CalculateDamage(m_Inventory[0], Temp));
-		}
-		else
+		auto Pursuit = [&AIStates, &MoveTowards, &HasLOS, this]() mutable
 		{
-			if(m_PrevTargetIsSet)
-				m_WorldPos = Move(m_WorldPos, MoveTowards(m_WorldPos, m_PrevTarget));
-		}
+			if (!HasLOS())
+			{
+				m_CurrentState = StateType::LastKnown;
+				AIStates[m_CurrentState]();
+				return;
+			}
+			m_PrevTarget = m_EnemyManagerRef->GetPlayerLoc();
+			WorldPos NextPos = Move(m_WorldPos, MoveTowards(m_WorldPos, m_PrevTarget));
+
+			Entity* Target = m_CollisionCallback(NextPos);
+			if (Target == nullptr)
+				m_WorldPos = NextPos;
+			else if (auto Temp = dynamic_cast<Player*>(Target))
+				if(!isDead())
+					Temp->ReceiveDamage(CalculateDamage(m_Inventory[0], Temp));
+		};
+
+		AIStates.insert(std::make_pair<StateType, AIFunction>(StateType::Pursuit, Pursuit));
+
+		auto Rest = [&AIStates, &HasLOS, this]() mutable
+		{
+			if (HasLOS())
+			{
+				m_CurrentState = StateType::Pursuit;
+				AIStates[m_CurrentState]();
+				return;
+			}
+			//Do nothing
+		};
+
+		AIStates.insert(std::make_pair<StateType, AIFunction>(StateType::Rest, Rest));
+
+		auto LastKnown = [&]() mutable
+		{
+			if (HasLOS())
+			{
+				m_CurrentState = StateType::Pursuit;
+				AIStates[m_CurrentState]();
+				return;
+			}
+			if (m_WorldPos == m_PrevTarget)
+			{
+				m_CurrentState = StateType::Rest;
+				AIStates[m_CurrentState]();
+				return;
+			}
+			m_WorldPos = Move(m_WorldPos, MoveTowards(m_WorldPos, m_PrevTarget));
+		};
+		AIStates.insert(std::make_pair<StateType, AIFunction>(StateType::LastKnown, LastKnown));
+
+		AIStates[m_CurrentState]();
 	};
 }
 
@@ -71,13 +108,12 @@ bool Enemy::isDead() const
 void Enemy::ReceiveDamage(int Damage)
 {
 	m_Health -= Damage;
-	if (!isDead())
+	if (isDead())
 		m_EventManagerRef->HandleEvent(EventType::ENEMY_DEATH);
 }
 
 Enemy::Enemy(RenderManager& RenderManager, CollisionSystem& CollisionSystem, EnemyManager* EnemyManager, EventManager* EventManager, WorldGenerator* World)
 {
-	m_PrevTargetIsSet = false;
 	m_Health  = m_MaxHP = 100;
 	m_DeathHP = 0;
 
@@ -99,6 +135,9 @@ Enemy::Enemy(RenderManager& RenderManager, CollisionSystem& CollisionSystem, Ene
 		CollisionSystem.RemoveEntity(this);
 	});
 
+	m_CurrentState = StateType::Rest;
+	MovementCallback()(EventType::NO_EVENT); // Doesn't matter what kind, just need to run this once.
+	return;
 }
 
 Enemy::~Enemy()
