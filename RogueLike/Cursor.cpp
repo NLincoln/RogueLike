@@ -4,7 +4,7 @@
 #include "MovementSystem.h"
 #include "EntityCommon.h"
 
-Cursor::Cursor(const SpriteBlock sprite, MovementSystem& manager)
+Cursor::Cursor(const SpriteList sprite, MovementSystem& manager)
 {
 	m_Sprite = sprite;
 

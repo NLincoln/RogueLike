@@ -28,7 +28,7 @@ public:
 	std::vector<Entity*> FindLine(WorldPos Start, WorldPos End) const;
 	std::function<void(EventType)> MovementCallback();
 
-	Player(SpriteBlock sprite, 
+	Player(SpriteList sprite,
 		   RenderManager& RenderManager, 
 		   MovementSystem& MovementSystem, 
 		   CollisionSystem& CollisionSystem, 

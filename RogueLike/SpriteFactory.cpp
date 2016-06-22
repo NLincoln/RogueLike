@@ -1,11 +1,11 @@
 #include "SpriteFactory.h"
 #include <cctype>
-#include "SpriteBlock.h"
+#include "SpriteList.h"
 #include "RenderCommon.h"
 
-SpriteBlock SpriteFactory::CreateFromText(std::string Text)
+SpriteList SpriteFactory::CreateFromText(std::string Text)
 {
-	SpriteBlock Result;
+	SpriteList Result;
 	sf::Sprite sprite;
 	
 	uint offset = 0;
@@ -20,21 +20,21 @@ SpriteBlock SpriteFactory::CreateFromText(std::string Text)
 	return Result;
 }
 
-SpriteBlock SpriteFactory::CreateFromSpriteName(SPRITENAMES name)
+SpriteList SpriteFactory::CreateFromSpriteName(SPRITENAMES name)
 {
-	SpriteBlock Result;
+	SpriteList Result;
 	sf::Sprite Sprite;
 	Sprite.setTexture(m_Textures[name]);
 	Result.AddSprite(Sprite);
 	return Result;
 }
 
-SpriteBlock SpriteFactory::operator[](SPRITENAMES name)
+SpriteList SpriteFactory::operator[](SPRITENAMES name)
 {
 	return CreateFromSpriteName(name);
 }
 
-SpriteBlock SpriteFactory::operator[](std::string Text)
+SpriteList SpriteFactory::operator[](std::string Text)
 {
 	return CreateFromText(Text);
 }

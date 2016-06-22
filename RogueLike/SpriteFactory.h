@@ -3,7 +3,7 @@
 #include <iostream>
 #include "Common.h"
 
-class SpriteBlock;
+class SpriteList;
 
 enum class SPRITENAMES : uint
 {
@@ -32,12 +32,12 @@ class SpriteFactory
 
 	std::map<SPRITENAMES, sf::Texture> m_Textures;
 
-	SpriteBlock CreateFromSpriteName(SPRITENAMES name);
-	SpriteBlock CreateFromText(std::string Text);
+	SpriteList CreateFromSpriteName(SPRITENAMES name);
+	SpriteList CreateFromText(std::string Text);
 
 public:
-	SpriteBlock operator[](SPRITENAMES name);
-	SpriteBlock operator[](std::string Text);
+	SpriteList operator[](SPRITENAMES name);
+	SpriteList operator[](std::string Text);
 	SpriteFactory(std::string Filename);
 	~SpriteFactory();
 };

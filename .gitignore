@@ -9,3 +9,4 @@ RogueLike/Debug/*
 *.idb
 bin/*
 .idea/*
+RogueLike/x64/

@@ -9,7 +9,7 @@ class Wall : public Entity
 public:
 	WorldPos MoveWorldPos(WorldPos delta) override { return m_WorldPos; }
 
-	Wall(SpriteBlock Sprite);
+	Wall(SpriteList Sprite);
 	~Wall();
 };
 

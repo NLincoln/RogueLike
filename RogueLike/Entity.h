@@ -2,7 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "SpriteBlock.h"
+#include "SpriteList.h"
 #include "RenderCommon.h"
 
 struct EntityDescription
@@ -14,14 +14,14 @@ class Entity : public sf::Drawable, public sf::Transformable
 {
 protected:
 	WorldPos m_WorldPos;
-	SpriteBlock m_Sprite;
+	SpriteList m_Sprite;
 
 public:
 	WorldPos GetWorldPos() const;
 	virtual WorldPos MoveWorldPos(WorldPos delta);
 	void SetWorldPos(WorldPos NewPos);
 
-	void SetSprite(SpriteBlock sprite);
+	void SetSprite(SpriteList sprite);
 
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 

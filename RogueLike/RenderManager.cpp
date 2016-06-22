@@ -2,6 +2,28 @@
 #include "Entity.h"
 #include "Player.h"
 #include "Enemy.h"
+#include <string>
+
+void HUDSystem::AddHook(std::function<std::string()> Hook)
+{
+	m_HudCallbacks.push_back(Hook);
+}
+
+void HUDSystem::RemoveHook(std::function<std::string()> Hook)
+{
+	//m_HudCallbacks.erase(std::find(m_HudCallbacks.begin(), m_HudCallbacks.end(), Hook));
+}
+
+SpriteList HUDSystem::Render(WorldPos Dims) const
+{
+	SpriteList Value;
+	return Value;
+}
+
+HUDSystem& RenderManager::GetHUD()
+{
+	return m_Hud;
+}
 
 void RenderManager::AddEntity(Entity* ent)
 {
@@ -26,6 +48,13 @@ void RenderManager::SetRenderTarget(sf::RenderTarget* target)
 
 void RenderManager::Draw() const
 {
+	sf::Rect<float> WorldBox; // Works in Render coordinates
+	WorldBox.top = 0;
+	WorldBox.left = 0;
+	WorldBox.height = SCREEN_HEIGHT - 10 * SPRITE_HEIGHT;
+	WorldBox.width = SCREEN_WIDTH - 10 * SPRITE_WIDTH;
+
+
 
 	if(m_RenderTarget && m_FocusEntity)
 	{
@@ -37,7 +66,7 @@ void RenderManager::Draw() const
 			sf::Vector2f RenderPos = {};
 			WorldPos ScreenPos = {};
 			WorldPos Delta = BlockPos - FocusLoc;
-			WorldPos Center = { WORLD_WIDTH / 2, WORLD_HEIGHT / 2 };
+			WorldPos Center = { WORLD_WIDTH / 2 - 16, WORLD_HEIGHT / 2 - 16};
 			ScreenPos = Center + Delta;
 			RenderPos.x = ScreenPos.x * SPRITE_WIDTH;
 			RenderPos.y = ScreenPos.y * SPRITE_HEIGHT;
@@ -57,7 +86,9 @@ void RenderManager::Draw() const
 				sf::Uint8 DisplayColor = Temp->m_Health / static_cast<double>(Temp->m_MaxHP) * 255;
 				Block.SetColor(sf::Color(255, DisplayColor, DisplayColor));
 			}
-			m_RenderTarget->draw(Block);
+
+			if (WorldBox.contains(RenderPos))
+				m_RenderTarget->draw(Block);
 		}
 	}
 }

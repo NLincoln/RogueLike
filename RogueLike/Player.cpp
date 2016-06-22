@@ -32,7 +32,7 @@ std::function<void(EventType)> Player::MovementCallback()
 	};
 }
 
-Player::Player(const SpriteBlock sprite, 
+Player::Player(const SpriteList sprite,
 	           RenderManager& RenderManager, 
 	           MovementSystem& MovementSystem, 
 	           CollisionSystem& CollisionSystem, 

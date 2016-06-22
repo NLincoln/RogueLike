@@ -18,7 +18,7 @@ void Entity::SetWorldPos(WorldPos NewPos)
 	m_WorldPos = NewPos;
 }
 
-void Entity::SetSprite(SpriteBlock sprite)
+void Entity::SetSprite(SpriteList sprite)
 {
 	m_Sprite = sprite;
 }

@@ -1,33 +1,38 @@
-#include "SpriteBlock.h"
+#include "SpriteList.h"
 #include "RenderCommon.h"
 
-void SpriteBlock::SetWorldPos(WorldPos Pos)
+void SpriteList::SetWidth(uint Width)
+{
+	m_Width = Width;
+}
+
+void SpriteList::SetWorldPos(WorldPos Pos)
 {
 	m_WorldPos = Pos;
 	setPosition(m_WorldPos.x * SPRITE_WIDTH, m_WorldPos.y * SPRITE_HEIGHT);
 }
 
-void SpriteBlock::AddSprite(sf::Sprite Sprite)
+void SpriteList::AddSprite(sf::Sprite Sprite)
 {
 	m_SpriteList.push_back(Sprite);
 }
 
-void SpriteBlock::SetColor(sf::Color Color)
+void SpriteList::SetColor(sf::Color Color)
 {
 	for (auto& Sprite : m_SpriteList)
 		Sprite.setColor(Color);
 }
 
-SpriteBlock::SpriteBlock()
+SpriteList::SpriteList()
+{
+	m_Width = 0;
+}
+
+SpriteList::~SpriteList()
 {
 }
 
-
-SpriteBlock::~SpriteBlock()
-{
-}
-
-void SpriteBlock::draw(sf::RenderTarget& target, sf::RenderStates states) const
+void SpriteList::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	auto BlockPos = getPosition();
 	for (auto sprite : m_SpriteList)
