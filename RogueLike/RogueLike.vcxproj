@@ -171,9 +171,6 @@
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="RenderManager.cpp" />
-    <ClCompile Include="SpriteCanvas.cpp" />
-    <ClCompile Include="SpriteList.cpp" />
-    <ClCompile Include="SpriteFactory.cpp" />
     <ClCompile Include="Wall.cpp" />
     <ClCompile Include="World.cpp" />
   </ItemGroup>
@@ -193,8 +190,6 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="RenderCommon.h" />
     <ClInclude Include="RenderManager.h" />
-    <ClInclude Include="SpriteCanvas.h" />
-    <ClInclude Include="SpriteList.h" />
     <ClInclude Include="SpriteFactory.h" />
     <ClInclude Include="Tree.h" />
     <ClInclude Include="Wall.h" />
