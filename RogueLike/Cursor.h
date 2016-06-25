@@ -8,7 +8,7 @@ class Cursor : public Entity
 {
 
 public:
-	Cursor(const SpriteList sprite, MovementSystem& manager);
-	~Cursor();
+    Cursor(const SpriteList sprite, MovementSystem& manager);
+    ~Cursor();
 };
 

@@ -3,12 +3,12 @@
 
 void Item::SetDamage(uint Damage)
 {
-	m_Damage = Damage;
+    m_Damage = Damage;
 }
 
 uint Item::GetDamage() const
 {
-	return m_Damage;
+    return m_Damage;
 }
 
 Item::Item()

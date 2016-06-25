@@ -13,27 +13,27 @@ class EventManager;
 
 class Player : public Entity
 {
-	std::vector<Item> m_Inventory;
-	
-	int m_Health;
-	int m_DeathHP;
+    std::vector<Item> m_Inventory;
+    
+    int m_Health;
+    int m_DeathHP;
 
-	WorldGenerator* m_WorldRef;
+    WorldGenerator* m_WorldRef;
 
-	CollisionCallback m_CollisionCallback;
-	EventManager* m_EventManagerRef;
+    CollisionCallback m_CollisionCallback;
+    EventManager* m_EventManagerRef;
 
 public:
-	void ReceiveDamage(int Damage);
-	std::vector<Entity*> FindLine(WorldPos Start, WorldPos End) const;
-	std::function<void(EventType)> MovementCallback();
+    void ReceiveDamage(int Damage);
+    std::vector<Entity*> FindLine(WorldPos Start, WorldPos End) const;
+    std::function<void(EventType)> MovementCallback();
 
-	Player(SpriteList sprite,
-		   RenderManager& RenderManager, 
-		   MovementSystem& MovementSystem, 
-		   CollisionSystem& CollisionSystem, 
-		   EventManager* EventManager,
-		   WorldGenerator* WorldGenerator);
-	~Player();
+    Player(SpriteList sprite,
+           RenderManager& RenderManager, 
+           MovementSystem& MovementSystem, 
+           CollisionSystem& CollisionSystem, 
+           EventManager* EventManager,
+           WorldGenerator* WorldGenerator);
+    ~Player();
 };
 
