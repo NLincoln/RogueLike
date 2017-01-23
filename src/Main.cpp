@@ -19,77 +19,77 @@
 template <typename T>
 T GetRandom(T min, T max)
 {
-	return (static_cast<float>(rand()) / RAND_MAX) * (max - min) + min;
+  return (static_cast<float>(rand()) / RAND_MAX) * (max - min) + min;
 }
 
 int main(int argc, const char** argv)
 {
-	srand(time(nullptr));
-	sf::RenderWindow* Window = new sf::RenderWindow();
-	sf::VideoMode Mode;
-	Mode.height = WINDOW_HEIGHT;
-	Mode.width = WINDOW_WIDTH;
-	SpriteFactory SpriteFactory("TileSet.png");
-	Window->create(Mode, "src");
+  srand(time(nullptr));
+  sf::RenderWindow* Window = new sf::RenderWindow();
+  sf::VideoMode Mode;
+  Mode.height = WINDOW_HEIGHT;
+  Mode.width = WINDOW_WIDTH;
+  SpriteFactory SpriteFactory("TileSet.png");
+  Window->create(Mode, "src");
 
-	Player* p = nullptr;
+  Player* p = nullptr;
 
-	EventManager EventManager;
-	MovementSystem MovementSystem(EventManager);
-	CollisionSystem CollisionSystem;
-	RenderManager RenderManager;
+  EventManager EventManager;
+  MovementSystem MovementSystem(EventManager);
+  CollisionSystem CollisionSystem;
+  RenderManager RenderManager;
 
-	WorldGenerator World(WorldPos(WINDOW_WIDTH / 16 - 1, WINDOW_HEIGHT / 16 - 1));
-	World.CreateRandom(RenderManager, CollisionSystem, SpriteFactory);
+  WorldGenerator World(WorldPos(WINDOW_WIDTH / 16 - 1, WINDOW_HEIGHT / 16 - 1));
+  World.CreateRandom(RenderManager, CollisionSystem, SpriteFactory);
 
-	p = new Player(SpriteFactory["@"], RenderManager, MovementSystem, CollisionSystem, &EventManager, &World);
+  p = new Player(SpriteFactory["@"], RenderManager, MovementSystem, CollisionSystem, &EventManager, &World);
 
-	EnemyManager EnemyManager(EventManager, MovementSystem, p);
-	Enemy* e = new Enemy(RenderManager, CollisionSystem, &EnemyManager, &EventManager, &World);
-	e->SetSprite(SpriteFactory["E"]);
-	e->SetWorldPos(WorldPos(1, 3));
+  EnemyManager EnemyManager(EventManager, MovementSystem, p);
+  Enemy* e = new Enemy(RenderManager, CollisionSystem, &EnemyManager, &EventManager, &World);
+  e->SetSprite(SpriteFactory["E"]);
+  e->SetWorldPos(WorldPos(1, 3));
 
-	EventCallback Switch = [&] (EventType Type)
-	{
-		switch(Type)
-		{
-		case EventType::NUMPAD_2:
-			p->SetWorldPos(WorldPos(1, 1));
-			RenderManager.SetFocus(p);
-			MovementSystem.SetFocus(p);
-			break;
-		default: break;
-		}
-	};
+  EventCallback Switch = [&] (EventType Type)
+  {
+    switch(Type)
+    {
+    case EventType::NUMPAD_2:
+      p->SetWorldPos(WorldPos(1, 1));
+      RenderManager.SetFocus(p);
+      MovementSystem.SetFocus(p);
+      break;
+    default: break;
+    }
+  };
 
-	EventCallback Close = [&] (EventType Type)
-	{
-		Window->close();
-	};
+  EventCallback Close = [&] (EventType Type)
+  {
+    Window->close();
+  };
 
-	EventManager.AddHook(ERange::NumKey, Switch);
-	EventManager.AddHook(EventType::EXIT_GAME, Close);
+  EventManager.AddHook(ERange::NumKey, Switch);
+  EventManager.AddHook(EventType::EXIT_GAME, Close);
 
-	RenderManager.SetRenderTarget(Window);
-	while (Window->isOpen())
-	{
-		// check all the window's events that were triggered since the last iteration of the loop
-		sf::Event event;
-		while (Window->pollEvent(event))
-		{
-			// "close requested" event: we close the window
-			if (event.type == sf::Event::Closed)
-				Window->close();
-			EventManager.ProcessSFMLEvent(event);
-		}
-		Window->clear();
-		RenderManager.Draw();
-		Window->display();
-	}
+  RenderManager.SetRenderTarget(Window);
+  while (Window->isOpen())
+  {
+    // check all the window's events that were triggered since the last iteration of the loop
+    sf::Event event;
+    while (Window->pollEvent(event))
+    {
+      // "close requested" event: we close the window
+      if (event.type == sf::Event::Closed)
+        Window->close();
+      EventManager.ProcessSFMLEvent(event);
+    }
+    Window->clear();
+    RenderManager.Draw();
+    Window->display();
+  }
 
-	delete p;
-	delete e;
+  delete p;
+  delete e;
 
 
-	return 0;
+  return 0;
 }

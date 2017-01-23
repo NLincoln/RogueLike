@@ -3,7 +3,7 @@
 
 Wall::Wall(SpriteList Sprite) : m_ObstructionComponent([] () {})
 {
-	m_Sprite = Sprite;
+  m_Sprite = Sprite;
 }
 
 

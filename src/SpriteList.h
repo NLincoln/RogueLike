@@ -6,25 +6,25 @@ using WorldPos = sf::Vector2u;
 
 class SpriteList : public sf::Drawable, public sf::Transformable
 {
-	std::vector<sf::Sprite> m_SpriteList;
-	WorldPos m_WorldPos;
+  std::vector<sf::Sprite> m_SpriteList;
+  WorldPos m_WorldPos;
 
-	uint m_Width;
+  uint m_Width;
 
 public:
-	void SetWidth(uint Width);
+  void SetWidth(uint Width);
 
-	void SetWorldPos(WorldPos Pos);
+  void SetWorldPos(WorldPos Pos);
 
-	void AddSprite(sf::Sprite Sprite);
+  void AddSprite(sf::Sprite Sprite);
 
-	void SetColor(sf::Color Color);
+  void SetColor(sf::Color Color);
 
-	SpriteList();
-	~SpriteList();
+  SpriteList();
+  ~SpriteList();
 
-	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+  virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
-	friend class SpriteCanvas;
+  friend class SpriteCanvas;
 };
 

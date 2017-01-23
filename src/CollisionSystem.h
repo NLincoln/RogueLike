@@ -6,13 +6,13 @@ using CollisionCallback = std::function<Entity*(WorldPos)>;
 
 class CollisionSystem
 {
-	std::vector<Entity*> m_Entities;
+  std::vector<Entity*> m_Entities;
 public:
-	void AddEntity(Entity* NewEntity);
-	void RemoveEntity(Entity* ToRemove);
-	CollisionCallback GetCallback();
+  void AddEntity(Entity* NewEntity);
+  void RemoveEntity(Entity* ToRemove);
+  CollisionCallback GetCallback();
 
-	CollisionSystem();
-	~CollisionSystem();
+  CollisionSystem();
+  ~CollisionSystem();
 };
 

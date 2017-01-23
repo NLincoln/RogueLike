@@ -6,12 +6,12 @@
 
 Cursor::Cursor(const SpriteList sprite, MovementSystem& manager)
 {
-	m_Sprite = sprite;
+  m_Sprite = sprite;
 
-	manager.AddHook(ERange::Movement, this, [&](EventType Event)
-	{
-		m_WorldPos = Move(m_WorldPos, Event, 1);
-	});
+  manager.AddHook(ERange::Movement, this, [&](EventType Event)
+  {
+    m_WorldPos = Move(m_WorldPos, Event, 1);
+  });
 }
 
 

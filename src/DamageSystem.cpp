@@ -6,8 +6,8 @@
 
 uint CalculateDamage(const Item& Item, Entity* Victim) 
 {
-	uint Damage = 0;
-	Damage += Item.GetDamage();
-	
-	return Damage;
+  uint Damage = 0;
+  Damage += Item.GetDamage();
+  
+  return Damage;
 }

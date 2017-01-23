@@ -4,12 +4,12 @@
 
 class Wall : public Entity
 {
-	Comp::Obstruction m_ObstructionComponent;
+  Comp::Obstruction m_ObstructionComponent;
 
 public:
-	WorldPos MoveWorldPos(WorldPos delta) override { return m_WorldPos; }
+  WorldPos MoveWorldPos(WorldPos delta) override { return m_WorldPos; }
 
-	Wall(SpriteList Sprite);
-	~Wall();
+  Wall(SpriteList Sprite);
+  ~Wall();
 };
 
