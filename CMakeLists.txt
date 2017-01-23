@@ -1,37 +1,51 @@
 cmake_minimum_required(VERSION 3.3)
 project(RogueLike)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -lsfml-graphics -lsfml-window -lsfml-system")
+set(CMAKE_CXX_STANDARD 14)
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
 
 set(SOURCE_FILES
-    RogueLike/CollisionSystem.cpp
-    RogueLike/CollisionSystem.h
-    RogueLike/Common.h
-    RogueLike/Component.cpp
-    RogueLike/Component.h
-    RogueLike/Cursor.cpp
-    RogueLike/Cursor.h
-    RogueLike/Entity.cpp
-    RogueLike/Entity.h
-    RogueLike/Event.cpp
-    RogueLike/Event.h
-    RogueLike/Main.cpp
-    RogueLike/MovementSystem.cpp
-    RogueLike/MovementSystem.h
-    RogueLike/Player.cpp
-    RogueLike/Player.h
-    RogueLike/RenderCommon.h
-    RogueLike/RenderManager.cpp
-    RogueLike/RenderManager.h
-    RogueLike/SpriteBlock.cpp
-    RogueLike/SpriteBlock.h
-    RogueLike/SpriteFactory.cpp
-    RogueLike/SpriteFactory.h
-    RogueLike/Tree.h
-    RogueLike/Wall.cpp
-    RogueLike/Wall.h
-    RogueLike/World.cpp
-    RogueLike/World.h)
+        src/CollisionSystem.cpp
+        src/CollisionSystem.h
+        src/Common.h
+        src/Component.cpp
+        src/Component.h
+        src/Cursor.cpp
+        src/Cursor.h
+        src/DamageSystem.cpp
+        src/DamageSystem.h
+        src/Enemy.cpp
+        src/Enemy.h
+        src/EnemyManager.cpp
+        src/EnemyManager.h
+        src/Entity.cpp
+        src/Entity.h
+        src/EntityCommon.h
+        src/Event.cpp
+        src/Event.h
+        src/Item.cpp
+        src/Item.h
+        src/Main.cpp
+        src/MovementSystem.cpp
+        src/MovementSystem.h
+        src/Player.cpp
+        src/Player.h
+        src/RenderCommon.h
+        src/RenderManager.cpp
+        src/RenderManager.h
+        src/SpriteCanvas.cpp
+        src/SpriteCanvas.h
+        src/SpriteFactory.cpp
+        src/SpriteFactory.h
+        src/SpriteList.cpp
+        src/SpriteList.h
+        src/Tree.h
+        src/Wall.cpp
+        src/Wall.h
+        src/World.cpp
+        src/World.h
+        )
 
 add_executable(RogueLike ${SOURCE_FILES})
 

@@ -30,7 +30,7 @@ int main(int argc, const char** argv)
 	Mode.height = WINDOW_HEIGHT;
 	Mode.width = WINDOW_WIDTH;
 	SpriteFactory SpriteFactory("TileSet.png");
-	Window->create(Mode, "RogueLike");
+	Window->create(Mode, "src");
 
 	Player* p = nullptr;
 
